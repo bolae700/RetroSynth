@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neon Retro Player</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;500;700&display=swap" rel="stylesheet">
+    <title>RETRO WAVE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            cursor: none;
         }
 
         body {
@@ -19,23 +20,48 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            font-family: 'Rajdhani', sans-serif;
+            font-family: 'Inter', sans-serif;
             padding: 10px;
             overflow: hidden;
         }
 
+        /* Digital Rain Background */
+        #matrixCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.2;
+        }
+
+        /* Triangle Cursor */
+        .cursor {
+            position: fixed;
+            width: 0;
+            height: 0;
+            border-left: 4px solid transparent;
+            border-right: 4px solid transparent;
+            border-bottom: 8px solid #0f0;
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+            filter: drop-shadow(0 0 6px #0f0);
+            transition: transform 0.1s;
+        }
+
         .player {
-            width: 320px;
-            background: linear-gradient(135deg, #001a00 0%, #000800 100%);
-            border-radius: 16px;
-            box-shadow: 
-                0 0 0 2px #0f0,
-                0 0 30px rgba(0, 255, 0, 0.7),
-                inset 0 0 20px rgba(0, 80, 0, 0.5);
+            width: 300px;
+            background: rgba(0, 0, 0, 0.9);
             border: 1px solid #0f0;
-            padding: 15px;
+            box-shadow: 
+                0 0 0 1px #0f0,
+                0 0 25px rgba(0, 255, 0, 0.7);
+            padding: 18px;
             position: relative;
             overflow: hidden;
+            backdrop-filter: blur(8px);
         }
 
         .player::before {
@@ -45,76 +71,79 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: repeating-linear-gradient(
-                0deg,
-                rgba(0, 255, 0, 0.05) 0px,
-                rgba(0, 255, 0, 0.05) 1px,
-                transparent 1px,
-                transparent 2px
-            );
+            background: 
+                linear-gradient(45deg, transparent 49%, rgba(0, 255, 0, 0.03) 50%, transparent 51%);
+            background-size: 8px 8px;
             pointer-events: none;
             z-index: 1;
-            animation: scanline 8s linear infinite;
-        }
-
-        @keyframes scanline {
-            0% { transform: translateY(-100%); }
-            100% { transform: translateY(100%); }
         }
 
         .header {
-            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 15px;
             position: relative;
             z-index: 2;
+            border-bottom: 1px solid #0f0;
+            padding-bottom: 12px;
+        }
+
+        .logo-section {
+            display: flex;
+            flex-direction: column;
         }
 
         .logo {
             font-family: 'Orbitron', monospace;
-            font-size: 22px;
+            font-size: 16px;
             font-weight: 700;
-            text-shadow: 0 0 10px #0f0;
-            letter-spacing: 2px;
-            margin-bottom: 5px;
+            letter-spacing: 3px;
             color: #0f0;
-            background: linear-gradient(90deg, #0f0, #8f8, #0f0);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 8px #0f0;
+            margin-bottom: 2px;
         }
 
         .subtitle {
-            font-size: 10px;
+            font-size: 8px;
             color: #8f8;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
+            font-weight: 300;
+        }
+
+        .datetime {
+            text-align: right;
+        }
+
+        .time {
+            font-family: 'Orbitron', monospace;
+            font-size: 12px;
+            font-weight: 600;
+            color: #0f0;
+            margin-bottom: 2px;
+            text-shadow: 0 0 5px #0f0;
+        }
+
+        .date {
+            font-size: 9px;
+            color: #8f8;
+            font-weight: 300;
         }
 
         .visualizer {
             position: relative;
             width: 100%;
-            height: 80px;
+            height: 70px;
             margin-bottom: 15px;
-            border-radius: 8px;
-            overflow: hidden;
-            background: rgba(0, 20, 0, 0.5);
+            background: rgba(0, 10, 0, 0.3);
             border: 1px solid #0f0;
-            box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
-            z-index: 2;
+            overflow: hidden;
         }
 
         #waveCanvas {
             width: 100%;
             height: 100%;
             display: block;
-        }
-
-        .particles {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 3;
         }
 
         .track-info {
@@ -125,21 +154,22 @@
         }
 
         .track-title {
-            font-size: 16px;
-            font-weight: 700;
+            font-size: 14px;
+            font-weight: 600;
             color: #0f0;
             margin-bottom: 3px;
-            text-shadow: 0 0 8px rgba(0, 255, 0, 0.7);
-            font-family: 'Orbitron', monospace;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            letter-spacing: 0.5px;
+            text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
         }
 
         .track-artist {
-            font-size: 12px;
+            font-size: 10px;
             color: #8f8;
             letter-spacing: 1px;
+            font-weight: 300;
         }
 
         .progress-container {
@@ -150,129 +180,115 @@
 
         .progress-bar {
             width: 100%;
-            height: 6px;
-            background: rgba(0, 30, 0, 0.8);
-            border-radius: 3px;
+            height: 3px;
+            background: rgba(0, 20, 0, 0.5);
             overflow: hidden;
-            border: 1px solid #0f0;
-            box-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
+            border: none;
         }
 
         .progress {
             height: 100%;
-            background: linear-gradient(90deg, #0f0, #8f8);
+            background: #0f0;
             width: 0%;
             transition: width 0.1s;
-            box-shadow: 0 0 10px #0f0;
+            box-shadow: 0 0 8px #0f0;
         }
 
         .time-display {
             display: flex;
             justify-content: space-between;
-            font-size: 10px;
+            font-size: 9px;
             color: #8f8;
-            margin-top: 5px;
-            font-family: 'Orbitron', monospace;
+            margin-top: 6px;
+            font-weight: 300;
+            letter-spacing: 0.5px;
         }
 
         .controls {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 6px;
             margin-bottom: 15px;
-            z-index: 2;
             position: relative;
+            z-index: 2;
         }
 
         .control-btn {
-            padding: 8px 5px;
-            background: linear-gradient(to bottom, #003000, #001000);
+            padding: 8px 4px;
+            background: transparent;
             border: 1px solid #0f0;
-            border-radius: 6px;
             color: #0f0;
-            cursor: pointer;
-            font-size: 11px;
-            font-family: 'Rajdhani', sans-serif;
-            font-weight: 600;
-            transition: all 0.3s;
-            text-shadow: 0 0 5px #0f0;
-            box-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
+            cursor: none;
+            font-size: 10px;
+            font-weight: 400;
+            transition: all 0.2s;
+            letter-spacing: 0.5px;
+            font-family: 'Inter', sans-serif;
         }
 
         .control-btn:hover {
-            background: linear-gradient(to bottom, #005000, #002000);
-            box-shadow: 0 0 10px rgba(0, 255, 0, 0.7);
-            transform: translateY(-1px);
-        }
-
-        .control-btn:active {
-            transform: translateY(1px);
+            background: rgba(0, 255, 0, 0.1);
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
         }
 
         .play-pause {
             grid-column: span 2;
-            background: linear-gradient(to bottom, #00a000, #004000);
-            font-weight: 700;
-            font-size: 12px;
+            font-weight: 600;
+            background: rgba(0, 255, 0, 0.05);
         }
 
         .volume-container {
             display: flex;
             align-items: center;
             gap: 8px;
-            margin-bottom: 12px;
-            z-index: 2;
+            margin-bottom: 15px;
             position: relative;
+            z-index: 2;
         }
 
         .volume-slider {
             flex: 1;
             -webkit-appearance: none;
-            height: 6px;
-            background: rgba(0, 30, 0, 0.8);
-            border-radius: 3px;
+            height: 2px;
+            background: rgba(0, 20, 0, 0.5);
             outline: none;
-            border: 1px solid #0f0;
+            border: none;
+            cursor: none;
         }
 
         .volume-slider::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
+            width: 10px;
+            height: 10px;
             background: #0f0;
-            cursor: pointer;
-            box-shadow: 0 0 8px #0f0;
+            cursor: none;
+            box-shadow: 0 0 6px #0f0;
         }
 
         .playlist {
-            max-height: 180px;
+            max-height: 140px;
             overflow-y: auto;
             border: 1px solid #0f0;
-            border-radius: 8px;
             padding: 8px;
-            background: rgba(0, 20, 0, 0.4);
-            z-index: 2;
+            background: rgba(0, 10, 0, 0.2);
             position: relative;
-            box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
+            z-index: 2;
         }
 
         .track-item {
-            padding: 8px 10px;
-            border-bottom: 1px solid rgba(0, 255, 0, 0.3);
-            cursor: pointer;
+            padding: 7px 9px;
+            border-bottom: 0.5px solid rgba(0, 255, 0, 0.2);
+            cursor: none;
             transition: all 0.2s;
             display: flex;
             align-items: center;
-            gap: 10px;
-            border-radius: 4px;
-            margin-bottom: 5px;
-            font-size: 12px;
+            gap: 8px;
+            margin-bottom: 4px;
+            font-size: 10px;
         }
 
         .track-item:hover {
-            background: rgba(0, 255, 0, 0.1);
-            box-shadow: 0 0 8px rgba(0, 255, 0, 0.3);
+            background: rgba(0, 255, 0, 0.08);
         }
 
         .track-item:last-child {
@@ -281,35 +297,36 @@
         }
 
         .track-number {
-            width: 20px;
-            height: 20px;
-            background: rgba(0, 255, 0, 0.2);
-            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            background: transparent;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 10px;
-            font-weight: 700;
+            font-size: 9px;
+            font-weight: 600;
             color: #0f0;
             border: 1px solid #0f0;
+            font-family: 'Orbitron', monospace;
         }
 
         .track-name {
             flex: 1;
             color: #8f8;
-            font-weight: 500;
+            font-weight: 400;
+            letter-spacing: 0.5px;
         }
 
         .track-duration {
-            font-size: 10px;
+            font-size: 9px;
             color: #0f0;
+            font-weight: 300;
             font-family: 'Orbitron', monospace;
         }
 
         .active-track {
-            background: rgba(0, 255, 0, 0.15);
-            box-shadow: 0 0 10px rgba(0, 255, 0, 0.4);
-            border: 1px solid #0f0;
+            background: rgba(0, 255, 0, 0.12);
+            border: 0.5px solid #0f0;
         }
 
         .active-track .track-number {
@@ -319,31 +336,32 @@
 
         .active-track .track-name {
             color: #0f0;
-            font-weight: 700;
+            font-weight: 600;
         }
 
         ::-webkit-scrollbar {
-            width: 6px;
+            width: 3px;
         }
 
         ::-webkit-scrollbar-track {
-            background: rgba(0, 20, 0, 0.5);
-            border-radius: 3px;
+            background: rgba(0, 10, 0, 0.3);
         }
 
         ::-webkit-scrollbar-thumb {
             background: #0f0;
-            border-radius: 3px;
         }
 
         .footer {
             text-align: center;
-            font-size: 9px;
+            font-size: 8px;
             color: #0a0;
-            margin-top: 10px;
-            z-index: 2;
+            margin-top: 12px;
             position: relative;
             letter-spacing: 1px;
+            font-weight: 300;
+            border-top: 0.5px solid #0f0;
+            padding-top: 10px;
+            z-index: 2;
         }
 
         .pulse {
@@ -351,26 +369,41 @@
         }
 
         @keyframes pulse {
-            0% { opacity: 0.7; }
+            0% { opacity: 0.8; }
             50% { opacity: 1; }
-            100% { opacity: 0.7; }
+            100% { opacity: 0.8; }
+        }
+
+        .glow {
+            text-shadow: 0 0 5px #0f0;
         }
     </style>
 </head>
 <body>
+    <!-- Digital Rain Background -->
+    <canvas id="matrixCanvas"></canvas>
+    
+    <!-- Triangle Cursor -->
+    <div class="cursor"></div>
+
     <div class="player">
         <div class="header">
-            <div class="logo pulse">NEON RETRO</div>
-            <div class="subtitle">MUSIC PLAYER</div>
+            <div class="logo-section">
+                <div class="logo pulse">RETRO WAVE</div>
+                <div class="subtitle">MUSIC PLAYER</div>
+            </div>
+            <div class="datetime">
+                <div class="time" id="currentTime">00:00:00</div>
+                <div class="date" id="currentDate">Loading...</div>
+            </div>
         </div>
 
         <div class="visualizer">
             <canvas id="waveCanvas"></canvas>
-            <div class="particles" id="particles"></div>
         </div>
 
         <div class="track-info">
-            <div class="track-title" id="trackTitle">SELECT A TRACK</div>
+            <div class="track-title glow" id="trackTitle">SELECT TRACK</div>
             <div class="track-artist" id="trackArtist">CLICK ON PLAYLIST</div>
         </div>
 
@@ -379,20 +412,21 @@
                 <div class="progress" id="progress"></div>
             </div>
             <div class="time-display">
-                <span id="currentTime">0:00</span>
-                <span id="duration">0:00</span>
+                <span id="currentTrackTime">0:00</span>
+                <span id="trackDuration">0:00</span>
             </div>
         </div>
 
         <div class="controls">
-            <button class="control-btn" id="prevBtn">PREV</button>
-            <button class="control-btn play-pause" id="playPauseBtn">PLAY</button>
-            <button class="control-btn" id="nextBtn">NEXT</button>
-            <button class="control-btn" id="loopBtn">LOOP</button>
+            <button class="control-btn" id="prevBtn">⏮</button>
+            <button class="control-btn play-pause" id="playPauseBtn">▶</button>
+            <button class="control-btn" id="nextBtn">⏭</button>
+            <button class="control-btn" id="loopBtn">↻</button>
+            <button class="control-btn" id="shuffleBtn">⇄</button>
         </div>
 
         <div class="volume-container">
-            <span style="color:#0f0; font-size:11px;">VOL</span>
+            <span style="color:#0f0; font-size:10px; font-weight:300;">VOL</span>
             <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="80">
         </div>
 
@@ -401,11 +435,111 @@
         </div>
 
         <div class="footer">
-            RETRO PLAYER v2.0 | DIRECT STREAM
+            SYSTEM ONLINE | ARABIC TRACKS | V1.0
         </div>
     </div>
 
     <script>
+        // Digital Rain Background
+        const matrixCanvas = document.getElementById('matrixCanvas');
+        const ctx = matrixCanvas.getContext('2d');
+        
+        // Set canvas size
+        matrixCanvas.width = window.innerWidth;
+        matrixCanvas.height = window.innerHeight;
+        
+        // Characters for the rain
+        const chars = "01010101010101010101010101010101";
+        const charArray = chars.split("");
+        
+        const fontSize = 12;
+        const columns = matrixCanvas.width / fontSize;
+        
+        // Array of drops - one per column
+        const drops = [];
+        for (let i = 0; i < columns; i++) {
+            drops[i] = Math.floor(Math.random() * matrixCanvas.height / fontSize);
+        }
+        
+        function drawMatrix() {
+            // Semi-transparent black to create trail effect
+            ctx.fillStyle = "rgba(0, 0, 0, 0.04)";
+            ctx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+            
+            ctx.fillStyle = "#0f0";
+            ctx.font = `${fontSize}px monospace`;
+            
+            for (let i = 0; i < drops.length; i++) {
+                // Random character
+                const text = charArray[Math.floor(Math.random() * charArray.length)];
+                
+                // x coordinate of the drop
+                const x = i * fontSize;
+                // y coordinate of the drop
+                const y = drops[i] * fontSize;
+                
+                ctx.fillText(text, x, y);
+                
+                // Reset drop to top when it reaches bottom
+                if (y > matrixCanvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                
+                // Move drop down
+                drops[i]++;
+            }
+        }
+
+        // Triangle Cursor
+        const cursor = document.querySelector('.cursor');
+        
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+        
+        // Add hover effect for interactive elements
+        const interactiveElements = document.querySelectorAll('.control-btn, .track-item, .volume-slider');
+        interactiveElements.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.style.transform = 'scale(1.3)';
+                cursor.style.borderBottomColor = '#8f8';
+            });
+            
+            el.addEventListener('mouseleave', () => {
+                cursor.style.transform = 'scale(1)';
+                cursor.style.borderBottomColor = '#0f0';
+            });
+        });
+
+        // Date and Time
+        function updateDateTime() {
+            const now = new Date();
+            
+            // Format time
+            const timeString = now.toLocaleTimeString('en-US', { 
+                hour12: false,
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            
+            // Format date
+            const dateString = now.toLocaleDateString('en-US', {
+                weekday: 'short',
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+            
+            document.getElementById('currentTime').textContent = timeString;
+            document.getElementById('currentDate').textContent = dateString;
+        }
+
+        // Update date/time every second
+        setInterval(updateDateTime, 1000);
+        updateDateTime();
+
         // Music tracks with direct URLs
         const tracks = [
             { id: 1, name: "7agat", url: "https://audio.jukehost.co.uk/gjH2MBJDYuH7HEX788UE0HaQqVyFbvjv", duration: "4:37" },
@@ -430,9 +564,10 @@
         let audioElement;
         let isPlaying = false;
         let isLooping = false;
+        let isShuffling = false;
         let currentTrackIndex = 0;
-        let particles = [];
         let animationId;
+        let matrixInterval;
 
         // Initialize the player
         function initPlayer() {
@@ -444,7 +579,7 @@
             try {
                 audioContext = new (window.AudioContext || window.webkitAudioContext)();
                 analyser = audioContext.createAnalyser();
-                analyser.fftSize = 256;
+                analyser.fftSize = 64;
                 
                 source = audioContext.createMediaElementSource(audioElement);
                 source.connect(analyser);
@@ -466,6 +601,9 @@
             
             // Initialize visualizer
             initVisualizer();
+            
+            // Start matrix background
+            matrixInterval = setInterval(drawMatrix, 35);
         }
 
         // Render the playlist
@@ -518,18 +656,18 @@
 
         // Update track info when metadata is loaded
         function updateTrackInfo() {
-            document.getElementById('duration').textContent = formatTime(audioElement.duration);
+            document.getElementById('trackDuration').textContent = formatTime(audioElement.duration);
         }
 
         // Update progress bar and time display
         function updateProgress() {
             const progress = document.getElementById('progress');
-            const currentTime = document.getElementById('currentTime');
+            const currentTrackTime = document.getElementById('currentTrackTime');
             
             if (audioElement.duration) {
                 const percent = (audioElement.currentTime / audioElement.duration) * 100;
                 progress.style.width = percent + '%';
-                currentTime.textContent = formatTime(audioElement.currentTime);
+                currentTrackTime.textContent = formatTime(audioElement.currentTime);
             }
         }
 
@@ -547,6 +685,8 @@
             if (isLooping) {
                 audioElement.currentTime = 0;
                 audioElement.play();
+            } else if (isShuffling) {
+                playRandomTrack();
             } else {
                 playNextTrack();
             }
@@ -564,6 +704,17 @@
             playTrack(currentTrackIndex);
         }
 
+        // Play random track
+        function playRandomTrack() {
+            let newIndex;
+            do {
+                newIndex = Math.floor(Math.random() * tracks.length);
+            } while (newIndex === currentTrackIndex && tracks.length > 1);
+            
+            currentTrackIndex = newIndex;
+            playTrack(currentTrackIndex);
+        }
+
         // Toggle play/pause
         function togglePlayPause() {
             if (!audioElement.src) {
@@ -574,7 +725,7 @@
             
             if (isPlaying) {
                 audioElement.pause();
-                document.getElementById('playPauseBtn').textContent = 'PLAY';
+                document.getElementById('playPauseBtn').textContent = '▶';
             } else {
                 // Resume audio context if suspended
                 if (audioContext && audioContext.state === 'suspended') {
@@ -582,7 +733,7 @@
                 }
                 
                 audioElement.play().then(() => {
-                    document.getElementById('playPauseBtn').textContent = 'PAUSE';
+                    document.getElementById('playPauseBtn').textContent = '⏸';
                     startVisualizer();
                 }).catch(e => {
                     console.error("Play failed:", e);
@@ -597,8 +748,16 @@
             isLooping = !isLooping;
             audioElement.loop = isLooping;
             document.getElementById('loopBtn').style.background = isLooping ? 
-                'linear-gradient(to bottom, #00c000, #006000)' : 
-                'linear-gradient(to bottom, #003000, #001000)';
+                'rgba(0, 255, 0, 0.1)' : 
+                'transparent';
+        }
+
+        // Toggle shuffle
+        function toggleShuffle() {
+            isShuffling = !isShuffling;
+            document.getElementById('shuffleBtn').style.background = isShuffling ? 
+                'rgba(0, 255, 0, 0.1)' : 
+                'transparent';
         }
 
         // Initialize visualizer
@@ -610,45 +769,8 @@
             canvas.width = canvas.offsetWidth;
             canvas.height = canvas.offsetHeight;
             
-            // Create particles
-            createParticles();
-            
             // Start animation loop
             animateVisualizer();
-        }
-
-        // Create particles for visualizer
-        function createParticles() {
-            const container = document.getElementById('particles');
-            particles = [];
-            
-            for (let i = 0; i < 20; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                
-                // Random position
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.top = Math.random() * 100 + '%';
-                
-                // Random size and opacity
-                const size = 2 + Math.random() * 3;
-                particle.style.width = size + 'px';
-                particle.style.height = size + 'px';
-                particle.style.opacity = 0.4 + Math.random() * 0.6;
-                particle.style.background = '#0f0';
-                particle.style.borderRadius = '50%';
-                particle.style.boxShadow = '0 0 5px #0f0';
-                particle.style.position = 'absolute';
-                
-                container.appendChild(particle);
-                particles.push({
-                    element: particle,
-                    x: Math.random() * 100,
-                    y: Math.random() * 100,
-                    speed: 0.5 + Math.random() * 1,
-                    size: size
-                });
-            }
         }
 
         // Start visualizer animation
@@ -664,8 +786,9 @@
             const canvas = document.getElementById('waveCanvas');
             const ctx = canvas.getContext('2d');
             
-            // Clear canvas
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            // Clear canvas with slight transparency for trail effect
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
             
             if (isPlaying && analyser) {
                 // Get frequency data
@@ -673,15 +796,33 @@
                 const dataArray = new Uint8Array(bufferLength);
                 analyser.getByteFrequencyData(dataArray);
                 
-                // Draw wave
-                ctx.lineWidth = 2;
+                // Draw frequency bars
+                const barWidth = canvas.width / bufferLength;
+                let x = 0;
+                
+                for (let i = 0; i < bufferLength; i++) {
+                    const barHeight = (dataArray[i] / 255) * canvas.height;
+                    
+                    // Create gradient
+                    const gradient = ctx.createLinearGradient(0, canvas.height - barHeight, 0, canvas.height);
+                    gradient.addColorStop(0, '#0f0');
+                    gradient.addColorStop(1, '#8f8');
+                    
+                    ctx.fillStyle = gradient;
+                    ctx.fillRect(x, canvas.height - barHeight, barWidth - 1, barHeight);
+                    
+                    x += barWidth;
+                }
+                
+                // Draw wave line
                 ctx.strokeStyle = '#0f0';
-                ctx.shadowBlur = 10;
+                ctx.lineWidth = 1.5;
+                ctx.shadowBlur = 8;
                 ctx.shadowColor = '#0f0';
                 ctx.beginPath();
                 
                 const sliceWidth = canvas.width / bufferLength;
-                let x = 0;
+                x = 0;
                 
                 for (let i = 0; i < bufferLength; i++) {
                     const v = dataArray[i] / 128.0;
@@ -697,59 +838,10 @@
                 }
                 
                 ctx.stroke();
-                
-                // Draw ocean wave effect
-                ctx.strokeStyle = '#8f8';
-                ctx.beginPath();
-                
-                x = 0;
-                for (let i = 0; i < bufferLength; i++) {
-                    const v = dataArray[i] / 256.0;
-                    const y = canvas.height - (v * canvas.height / 2);
-                    
-                    if (i === 0) {
-                        ctx.moveTo(x, y);
-                    } else {
-                        ctx.lineTo(x, y);
-                    }
-                    
-                    x += sliceWidth;
-                }
-                
-                ctx.stroke();
                 ctx.shadowBlur = 0;
-                
-                // Update particles
-                updateParticles(dataArray);
             }
             
             animationId = requestAnimationFrame(animateVisualizer);
-        }
-
-        // Update particles based on audio data
-        function updateParticles(dataArray) {
-            const avgFrequency = dataArray.reduce((a, b) => a + b, 0) / dataArray.length;
-            
-            particles.forEach(particle => {
-                // Move particle
-                particle.x += particle.speed;
-                if (particle.x > 100) particle.x = 0;
-                
-                // Adjust vertical position based on audio
-                const waveHeight = (avgFrequency / 256) * 20;
-                particle.y = 50 + Math.sin(particle.x / 10) * waveHeight;
-                
-                // Update DOM element
-                particle.element.style.left = particle.x + '%';
-                particle.element.style.top = particle.y + '%';
-                
-                // Pulse size based on audio
-                const pulse = 1 + (avgFrequency / 256) * 1.5;
-                particle.element.style.transform = `scale(${pulse})`;
-                
-                // Change opacity based on audio
-                particle.element.style.opacity = 0.4 + (avgFrequency / 256) * 0.6;
-            });
         }
 
         // Set up event listeners
@@ -757,6 +849,7 @@
         document.getElementById('prevBtn').addEventListener('click', playPrevTrack);
         document.getElementById('nextBtn').addEventListener('click', playNextTrack);
         document.getElementById('loopBtn').addEventListener('click', toggleLoop);
+        document.getElementById('shuffleBtn').addEventListener('click', toggleShuffle);
 
         document.getElementById('volumeSlider').addEventListener('input', () => {
             if (audioElement) {
@@ -772,6 +865,10 @@
             const canvas = document.getElementById('waveCanvas');
             canvas.width = canvas.offsetWidth;
             canvas.height = canvas.offsetHeight;
+            
+            // Resize matrix canvas
+            matrixCanvas.width = window.innerWidth;
+            matrixCanvas.height = window.innerHeight;
         });
     </script>
 </body>
