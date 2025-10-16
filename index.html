@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RETRO WAVE</title>
+    <title>RETRO MINIMAL</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <style>
         * {
@@ -25,43 +25,57 @@
             overflow: hidden;
         }
 
-        /* Digital Rain Background */
-        #matrixCanvas {
+        /* Retro Grid Background */
+        #gridCanvas {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             z-index: -1;
-            opacity: 0.2;
         }
 
-        /* Triangle Cursor */
+        /* Modern Cursor */
         .cursor {
             position: fixed;
-            width: 0;
-            height: 0;
-            border-left: 4px solid transparent;
-            border-right: 4px solid transparent;
-            border-bottom: 8px solid #0f0;
+            width: 16px;
+            height: 16px;
             pointer-events: none;
             z-index: 9999;
             mix-blend-mode: difference;
-            filter: drop-shadow(0 0 6px #0f0);
-            transition: transform 0.1s;
+            transition: transform 0.08s;
+            transform: rotate(-45deg);
+        }
+
+        .cursor::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-bottom: 16px solid #0f0;
+        }
+
+        .player-container {
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
         }
 
         .player {
-            width: 300px;
-            background: rgba(0, 0, 0, 0.9);
+            width: 280px;
+            background: rgba(0, 0, 0, 0.92);
             border: 1px solid #0f0;
             box-shadow: 
                 0 0 0 1px #0f0,
-                0 0 25px rgba(0, 255, 0, 0.7);
+                0 0 8px rgba(0, 255, 0, 0.15);
             padding: 18px;
             position: relative;
             overflow: hidden;
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(2px);
         }
 
         .player::before {
@@ -72,8 +86,36 @@
             right: 0;
             bottom: 0;
             background: 
-                linear-gradient(45deg, transparent 49%, rgba(0, 255, 0, 0.03) 50%, transparent 51%);
-            background-size: 8px 8px;
+                linear-gradient(45deg, transparent 49%, rgba(0, 255, 0, 0.005) 50%, transparent 51%);
+            background-size: 3px 3px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .lyrics-panel {
+            width: 280px;
+            background: rgba(0, 0, 0, 0.92);
+            border: 1px solid #0f0;
+            box-shadow: 
+                0 0 0 1px #0f0,
+                0 0 8px rgba(0, 255, 0, 0.15);
+            padding: 18px;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(2px);
+            display: none;
+        }
+
+        .lyrics-panel::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                linear-gradient(45deg, transparent 49%, rgba(0, 255, 0, 0.005) 50%, transparent 51%);
+            background-size: 3px 3px;
             pointer-events: none;
             z-index: 1;
         }
@@ -82,7 +124,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 16px;
             position: relative;
             z-index: 2;
             border-bottom: 1px solid #0f0;
@@ -98,21 +140,20 @@
             font-family: 'Orbitron', monospace;
             font-size: 16px;
             font-weight: 700;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
             color: #0f0;
-            text-shadow: 0 0 8px #0f0;
             margin-bottom: 2px;
         }
 
         .subtitle {
-            font-size: 8px;
+            font-size: 9px;
             color: #8f8;
-            letter-spacing: 1.5px;
+            letter-spacing: 1px;
             font-weight: 300;
         }
 
         .datetime {
-            text-align: right;
+            text-align: left;
         }
 
         .time {
@@ -121,11 +162,10 @@
             font-weight: 600;
             color: #0f0;
             margin-bottom: 2px;
-            text-shadow: 0 0 5px #0f0;
         }
 
         .date {
-            font-size: 9px;
+            font-size: 10px;
             color: #8f8;
             font-weight: 300;
         }
@@ -134,8 +174,8 @@
             position: relative;
             width: 100%;
             height: 70px;
-            margin-bottom: 15px;
-            background: rgba(0, 10, 0, 0.3);
+            margin-bottom: 16px;
+            background: rgba(0, 10, 0, 0.1);
             border: 1px solid #0f0;
             overflow: hidden;
         }
@@ -148,7 +188,7 @@
 
         .track-info {
             text-align: center;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
             position: relative;
             z-index: 2;
         }
@@ -162,26 +202,25 @@
             overflow: hidden;
             text-overflow: ellipsis;
             letter-spacing: 0.5px;
-            text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
         }
 
         .track-artist {
-            font-size: 10px;
+            font-size: 11px;
             color: #8f8;
-            letter-spacing: 1px;
+            letter-spacing: 0.7px;
             font-weight: 300;
         }
 
         .progress-container {
-            margin-bottom: 12px;
+            margin-bottom: 14px;
             position: relative;
             z-index: 2;
         }
 
         .progress-bar {
             width: 100%;
-            height: 3px;
-            background: rgba(0, 20, 0, 0.5);
+            height: 2px;
+            background: rgba(0, 20, 0, 0.2);
             overflow: hidden;
             border: none;
         }
@@ -191,13 +230,12 @@
             background: #0f0;
             width: 0%;
             transition: width 0.1s;
-            box-shadow: 0 0 8px #0f0;
         }
 
         .time-display {
             display: flex;
             justify-content: space-between;
-            font-size: 9px;
+            font-size: 10px;
             color: #8f8;
             margin-top: 6px;
             font-weight: 300;
@@ -205,64 +243,44 @@
         }
 
         .controls {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 6px;
-            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 16px;
             position: relative;
             z-index: 2;
         }
 
         .control-btn {
-            padding: 8px 4px;
+            padding: 8px 12px;
             background: transparent;
             border: 1px solid #0f0;
             color: #0f0;
             cursor: none;
-            font-size: 10px;
+            font-size: 11px;
             font-weight: 400;
-            transition: all 0.2s;
+            transition: all 0.15s;
             letter-spacing: 0.5px;
             font-family: 'Inter', sans-serif;
+            position: relative;
+            overflow: hidden;
+            flex: 1;
+            margin: 0 4px;
+            text-align: center;
+        }
+
+        .control-btn:active {
+            background: rgba(0, 255, 0, 0.15);
+            transform: scale(0.95);
         }
 
         .control-btn:hover {
-            background: rgba(0, 255, 0, 0.1);
-            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+            background: rgba(0, 255, 0, 0.08);
         }
 
         .play-pause {
-            grid-column: span 2;
+            flex: 2;
             font-weight: 600;
-            background: rgba(0, 255, 0, 0.05);
-        }
-
-        .volume-container {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 15px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .volume-slider {
-            flex: 1;
-            -webkit-appearance: none;
-            height: 2px;
-            background: rgba(0, 20, 0, 0.5);
-            outline: none;
-            border: none;
-            cursor: none;
-        }
-
-        .volume-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 10px;
-            height: 10px;
-            background: #0f0;
-            cursor: none;
-            box-shadow: 0 0 6px #0f0;
+            background: rgba(0, 255, 0, 0.03);
         }
 
         .playlist {
@@ -270,25 +288,25 @@
             overflow-y: auto;
             border: 1px solid #0f0;
             padding: 8px;
-            background: rgba(0, 10, 0, 0.2);
+            background: rgba(0, 10, 0, 0.1);
             position: relative;
             z-index: 2;
         }
 
         .track-item {
             padding: 7px 9px;
-            border-bottom: 0.5px solid rgba(0, 255, 0, 0.2);
+            border-bottom: 0.5px solid rgba(0, 255, 0, 0.08);
             cursor: none;
-            transition: all 0.2s;
+            transition: all 0.15s;
             display: flex;
             align-items: center;
             gap: 8px;
-            margin-bottom: 4px;
-            font-size: 10px;
+            margin-bottom: 5px;
+            font-size: 11px;
         }
 
         .track-item:hover {
-            background: rgba(0, 255, 0, 0.08);
+            background: rgba(0, 255, 0, 0.06);
         }
 
         .track-item:last-child {
@@ -297,13 +315,13 @@
         }
 
         .track-number {
-            width: 18px;
-            height: 18px;
+            width: 20px;
+            height: 20px;
             background: transparent;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 9px;
+            font-size: 10px;
             font-weight: 600;
             color: #0f0;
             border: 1px solid #0f0;
@@ -318,14 +336,14 @@
         }
 
         .track-duration {
-            font-size: 9px;
+            font-size: 10px;
             color: #0f0;
             font-weight: 300;
             font-family: 'Orbitron', monospace;
         }
 
         .active-track {
-            background: rgba(0, 255, 0, 0.12);
+            background: rgba(0, 255, 0, 0.1);
             border: 0.5px solid #0f0;
         }
 
@@ -340,11 +358,11 @@
         }
 
         ::-webkit-scrollbar {
-            width: 3px;
+            width: 2px;
         }
 
         ::-webkit-scrollbar-track {
-            background: rgba(0, 10, 0, 0.3);
+            background: rgba(0, 10, 0, 0.1);
         }
 
         ::-webkit-scrollbar-thumb {
@@ -353,144 +371,227 @@
 
         .footer {
             text-align: center;
-            font-size: 8px;
+            font-size: 9px;
             color: #0a0;
-            margin-top: 12px;
+            margin-top: 14px;
             position: relative;
             letter-spacing: 1px;
             font-weight: 300;
             border-top: 0.5px solid #0f0;
-            padding-top: 10px;
+            padding-top: 12px;
             z-index: 2;
         }
 
         .pulse {
-            animation: pulse 2s infinite;
+            animation: pulse 3s infinite;
         }
 
         @keyframes pulse {
-            0% { opacity: 0.8; }
+            0% { opacity: 0.9; }
             50% { opacity: 1; }
-            100% { opacity: 0.8; }
+            100% { opacity: 0.9; }
         }
 
-        .glow {
-            text-shadow: 0 0 5px #0f0;
+        /* Lyrics Panel Styles */
+        .lyrics-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 2;
+            border-bottom: 1px solid #0f0;
+            padding-bottom: 12px;
+        }
+
+        .lyrics-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #0f0;
+        }
+
+        .close-lyrics {
+            background: transparent;
+            border: 1px solid #0f0;
+            color: #0f0;
+            font-size: 12px;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: none;
+            transition: all 0.15s;
+        }
+
+        .close-lyrics:hover {
+            background: rgba(0, 255, 0, 0.1);
+        }
+
+        .lyrics-content {
+            height: 320px;
+            overflow-y: auto;
+            padding: 7px;
+            font-size: 11px;
+            line-height: 1.8;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .lyrics-line {
+            margin-bottom: 12px;
+            color: #8f8;
+            transition: all 0.3s;
+            padding: 5px;
+        }
+
+        .show-lyrics-btn {
+            width: 100%;
+            padding: 8px;
+            background: transparent;
+            border: 1px solid #0f0;
+            color: #0f0;
+            cursor: none;
+            font-size: 11px;
+            font-weight: 400;
+            transition: all 0.15s;
+            letter-spacing: 0.5px;
+            font-family: 'Inter', sans-serif;
+            margin-top: 12px;
+        }
+
+        .show-lyrics-btn:hover {
+            background: rgba(0, 255, 0, 0.1);
         }
     </style>
 </head>
 <body>
-    <!-- Digital Rain Background -->
-    <canvas id="matrixCanvas"></canvas>
+    <!-- Retro Grid Background -->
+    <canvas id="gridCanvas"></canvas>
     
-    <!-- Triangle Cursor -->
+    <!-- Modern Cursor -->
     <div class="cursor"></div>
 
-    <div class="player">
-        <div class="header">
-            <div class="logo-section">
-                <div class="logo pulse">RETRO WAVE</div>
-                <div class="subtitle">MUSIC PLAYER</div>
+    <div class="player-container">
+        <div class="player">
+            <div class="header">
+                <div class="logo-section">
+                    <div class="logo pulse">RETRO MINIMAL</div>
+                    <div class="subtitle">MUSIC PLAYER</div>
+                </div>
+                <div class="datetime">
+                    <div class="time" id="currentTime">00:00:00</div>
+                    <div class="date" id="currentDate">Loading...</div>
+                </div>
             </div>
-            <div class="datetime">
-                <div class="time" id="currentTime">00:00:00</div>
-                <div class="date" id="currentDate">Loading...</div>
+
+            <div class="visualizer">
+                <canvas id="waveCanvas"></canvas>
+            </div>
+
+            <div class="track-info">
+                <div class="track-title" id="trackTitle">SELECT TRACK</div>
+                <div class="track-artist" id="trackArtist">CLICK ON PLAYLIST</div>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress" id="progress"></div>
+                </div>
+                <div class="time-display">
+                    <span id="currentTrackTime">0:00</span>
+                    <span id="trackDuration">0:00</span>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button class="control-btn" id="prevBtn">⏮</button>
+                <button class="control-btn play-pause" id="playPauseBtn">▶</button>
+                <button class="control-btn" id="nextBtn">⏭</button>
+            </div>
+
+            <div class="playlist" id="playlist">
+                <!-- Tracks will be added here by JavaScript -->
+            </div>
+
+            <button class="show-lyrics-btn" id="showLyricsBtn">SHOW LYRICS</button>
+
+            <div class="footer">
+                SYSTEM ONLINE | MULTI-GENRE | V10.0
             </div>
         </div>
 
-        <div class="visualizer">
-            <canvas id="waveCanvas"></canvas>
-        </div>
-
-        <div class="track-info">
-            <div class="track-title glow" id="trackTitle">SELECT TRACK</div>
-            <div class="track-artist" id="trackArtist">CLICK ON PLAYLIST</div>
-        </div>
-
-        <div class="progress-container">
-            <div class="progress-bar">
-                <div class="progress" id="progress"></div>
+        <div class="lyrics-panel" id="lyricsPanel">
+            <div class="lyrics-header">
+                <div class="lyrics-title">LYRICS</div>
+                <button class="close-lyrics" id="closeLyricsBtn">X</button>
             </div>
-            <div class="time-display">
-                <span id="currentTrackTime">0:00</span>
-                <span id="trackDuration">0:00</span>
+            <div class="lyrics-content" id="lyricsContent">
+                <!-- Lyrics will be displayed here -->
             </div>
-        </div>
-
-        <div class="controls">
-            <button class="control-btn" id="prevBtn">⏮</button>
-            <button class="control-btn play-pause" id="playPauseBtn">▶</button>
-            <button class="control-btn" id="nextBtn">⏭</button>
-            <button class="control-btn" id="loopBtn">↻</button>
-            <button class="control-btn" id="shuffleBtn">⇄</button>
-        </div>
-
-        <div class="volume-container">
-            <span style="color:#0f0; font-size:10px; font-weight:300;">VOL</span>
-            <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="80">
-        </div>
-
-        <div class="playlist" id="playlist">
-            <!-- Tracks will be added here by JavaScript -->
-        </div>
-
-        <div class="footer">
-            SYSTEM ONLINE | ARABIC TRACKS | V1.0
         </div>
     </div>
 
     <script>
-        // Digital Rain Background
-        const matrixCanvas = document.getElementById('matrixCanvas');
-        const ctx = matrixCanvas.getContext('2d');
+        // Retro Grid Background
+        const gridCanvas = document.getElementById('gridCanvas');
+        const gctx = gridCanvas.getContext('2d');
         
         // Set canvas size
-        matrixCanvas.width = window.innerWidth;
-        matrixCanvas.height = window.innerHeight;
+        gridCanvas.width = window.innerWidth;
+        gridCanvas.height = window.innerHeight;
         
-        // Characters for the rain
-        const chars = "01010101010101010101010101010101";
-        const charArray = chars.split("");
+        // Grid settings
+        const gridSize = 40;
+        const gridOffset = { x: 0, y: 0 };
         
-        const fontSize = 12;
-        const columns = matrixCanvas.width / fontSize;
-        
-        // Array of drops - one per column
-        const drops = [];
-        for (let i = 0; i < columns; i++) {
-            drops[i] = Math.floor(Math.random() * matrixCanvas.height / fontSize);
-        }
-        
-        function drawMatrix() {
-            // Semi-transparent black to create trail effect
-            ctx.fillStyle = "rgba(0, 0, 0, 0.04)";
-            ctx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+        function drawGrid() {
+            gctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+            gctx.fillRect(0, 0, gridCanvas.width, gridCanvas.height);
             
-            ctx.fillStyle = "#0f0";
-            ctx.font = `${fontSize}px monospace`;
+            // Draw grid lines
+            gctx.strokeStyle = "rgba(0, 255, 0, 0.1)";
+            gctx.lineWidth = 0.5;
             
-            for (let i = 0; i < drops.length; i++) {
-                // Random character
-                const text = charArray[Math.floor(Math.random() * charArray.length)];
-                
-                // x coordinate of the drop
-                const x = i * fontSize;
-                // y coordinate of the drop
-                const y = drops[i] * fontSize;
-                
-                ctx.fillText(text, x, y);
-                
-                // Reset drop to top when it reaches bottom
-                if (y > matrixCanvas.height && Math.random() > 0.975) {
-                    drops[i] = 0;
-                }
-                
-                // Move drop down
-                drops[i]++;
+            // Vertical lines
+            for (let x = gridOffset.x % gridSize; x < gridCanvas.width; x += gridSize) {
+                gctx.beginPath();
+                gctx.moveTo(x, 0);
+                gctx.lineTo(x, gridCanvas.height);
+                gctx.stroke();
             }
+            
+            // Horizontal lines
+            for (let y = gridOffset.y % gridSize; y < gridCanvas.height; y += gridSize) {
+                gctx.beginPath();
+                gctx.moveTo(0, y);
+                gctx.lineTo(gridCanvas.width, y);
+                gctx.stroke();
+            }
+            
+            // Draw animated dots at grid intersections
+            const time = Date.now() * 0.001;
+            
+            for (let x = gridOffset.x % gridSize; x < gridCanvas.width; x += gridSize) {
+                for (let y = gridOffset.y % gridSize; y < gridCanvas.height; y += gridSize) {
+                    const pulse = Math.sin(time + x * 0.01 + y * 0.01) * 0.3 + 0.7;
+                    
+                    gctx.beginPath();
+                    gctx.arc(x, y, 0.5, 0, Math.PI * 2);
+                    gctx.fillStyle = `rgba(0, 255, 0, ${0.2 * pulse})`;
+                    gctx.fill();
+                }
+            }
+            
+            // Move grid slowly
+            gridOffset.x += 0.2;
+            gridOffset.y += 0.1;
         }
 
-        // Triangle Cursor
+        // Modern Cursor
         const cursor = document.querySelector('.cursor');
         
         document.addEventListener('mousemove', (e) => {
@@ -499,16 +600,14 @@
         });
         
         // Add hover effect for interactive elements
-        const interactiveElements = document.querySelectorAll('.control-btn, .track-item, .volume-slider');
+        const interactiveElements = document.querySelectorAll('.control-btn, .track-item, .show-lyrics-btn, .close-lyrics');
         interactiveElements.forEach(el => {
             el.addEventListener('mouseenter', () => {
-                cursor.style.transform = 'scale(1.3)';
-                cursor.style.borderBottomColor = '#8f8';
+                cursor.style.transform = 'rotate(-45deg) scale(1.3)';
             });
             
             el.addEventListener('mouseleave', () => {
-                cursor.style.transform = 'scale(1)';
-                cursor.style.borderBottomColor = '#0f0';
+                cursor.style.transform = 'rotate(-45deg) scale(1)';
             });
         });
 
@@ -540,21 +639,255 @@
         setInterval(updateDateTime, 1000);
         updateDateTime();
 
-        // Music tracks with direct URLs
+        // Music tracks with direct URLs and lyrics
         const tracks = [
-            { id: 1, name: "7agat", url: "https://audio.jukehost.co.uk/gjH2MBJDYuH7HEX788UE0HaQqVyFbvjv", duration: "4:37" },
-            { id: 2, name: "Awsflk", url: "https://audio.jukehost.co.uk/wMLygBX1aVYJgx7Qnf1EAJJiDgSy0o2j", duration: "4:27" },
-            { id: 3, name: "Ent Elly 3amlty", url: "https://audio.jukehost.co.uk/yahATprp8RrM9Wh4OPHxhFqjv0Zn0780", duration: "4:40" },
-            { id: 4, name: "Nghna", url: "https://audio.jukehost.co.uk/R6hp6mTYhkkXlrlrx4tPia0r1adxZjon", duration: "4:01" },
-            { id: 5, name: "Kol Sana", url: "https://audio.jukehost.co.uk/stsKQAUsqa1nMqfFEyIZBDquOhyaKgrc", duration: "4:32" },
-            { id: 6, name: "Eskoti", url: "https://audio.jukehost.co.uk/gVvKZJ6qgJdzJWNNuQJf2i8ZQjniADL7", duration: "3:56" },
-            { id: 7, name: "Kol Elly Fat", url: "https://audio.jukehost.co.uk/Lsj8s37oWEChvBysiCWekYJJlqlCXvax", duration: "3:53" },
-            { id: 8, name: "Bts3b 3lia Nafsi", url: "https://audio.jukehost.co.uk/rXqgRIQVxA6tGwikYVydedV4Wg85HiCP", duration: "3:44" },
-            { id: 9, name: "Elly Gai A7la", url: "https://audio.jukehost.co.uk/fwp855wgunbmUvTdPLbZldVI4lt5jhJ6", duration: "5:15" },
-            { id: 10, name: "Ya 3ini", url: "https://audio.jukehost.co.uk/8WYB3itQz2bLqCT3ZugjRo0RFPvLjCRD", duration: "4:11" },
-            { id: 11, name: "El Tofan", url: "https://audio.jukehost.co.uk/tzptUH0si7w8zecQ8aLMau4Gzvk35bJ3", duration: "4:42" },
-            { id: 12, name: "Ma Ttghiri", url: "https://audio.jukehost.co.uk/5xfVZ0UBNnE8G6Y0uS5gW0osyli4Mr6A", duration: "4:23" },
-            { id: 13, name: "Lolak", url: "https://audio.jukehost.co.uk/570CFW5i5OyvE9pDmNYaoLsfXWoWW7s3", duration: "2:55" }
+            { 
+                id: 1, 
+                name: "Asphalt Heartbeat", 
+                url: "https://audio.jukehost.co.uk/g1mnUVIICxoL3IQgWT1D1eBE3PebQz2z", 
+                duration: "5:12",
+                lyrics: [
+                    "Lights on. GO.",
+                    "",
+                    "Red line flash",
+                    "Concrete dash",
+                    "No time waste",
+                    "Join the chase",
+                    "City bright",
+                    "Endless night",
+                    "Feel the pace",
+                    "In this race.",
+                    "",
+                    "The beat gets louder, feel the ground shake",
+                    "Push it faster, for goodness sake!",
+                    "",
+                    "Asphalt heartbeat, syncs with mine",
+                    "Crossing every single line!",
+                    "Engine screams the name of night:",
+                    "يا ليل! (Ya Layl!)",
+                    "Burning through the neon light:",
+                    "يا ليل! (Ya Layl!)",
+                    "",
+                    "Steel frame shakes",
+                    "No mistakes",
+                    "Pulse is high",
+                    "Watch me fly",
+                    "Ghosts behind",
+                    "Lose my mind",
+                    "Can't rewind",
+                    "Leave them blind.",
+                    "",
+                    "The beat gets louder, feel the ground shake",
+                    "Push it faster, for goodness sake!",
+                    "",
+                    "Asphalt heartbeat, syncs with mine",
+                    "Crossing every single line!",
+                    "Engine screams the name of night:",
+                    "يا ليل! (Ya Layl!)",
+                    "Burning through the neon light:",
+                    "يا ليل! (Ya Layl!)",
+                    "",
+                    "Just the sound...",
+                    "Spinning 'round...",
+                    "Lost and found...",
+                    "",
+                    "Asphalt heartbeat, syncs with mine",
+                    "Crossing every single line!",
+                    "Engine screams the name of night:",
+                    "يا ليل! (Ya Layl!)",
+                    "Burning through the neon light:",
+                    "يا ليل! (Ya Layl!)"
+                ]
+            },
+            { 
+                id: 2, 
+                name: "Gönül Yarası", 
+                url: "https://audio.jukehost.co.uk/w6ljByylsvFth6LBE48dCCqdd0Ki9mUH", 
+                duration: "8:28",
+                lyrics: [
+                    "Güzelim, çıktı başımdan duman",
+                    "Bu aşkın elemi bitsin artık yaman",
+                    "",
+                    "Yaktın beni aman, o bakışınla yar",
+                    "Bu hasretlik ömre bedel, gel olmasın ayrılık",
+                    "Sensiz geçmiyor hiç bir an, canan",
+                    "Bu hasretlik ömre bedel, gel olmasın ayrılık",
+                    "",
+                    "Her gece sensizlik oldu bana dert",
+                    "Gel hadi çare ol, bitsin bu kara sert",
+                    "",
+                    "Yaktın beni aman, o bakışınla yar",
+                    "Bu hasretlik ömre bedel, gel olmasın ayrılık",
+                    "Sensiz geçmiyor hiç bir an, canan",
+                    "Bu hasretlik ömre bedel, gel olmasın ayrılık",
+                    "",
+                    "Gel olmasın ayrılık...",
+                    "Canan..."
+                ]
+            },
+            { 
+                id: 3, 
+                name: "Good Bye Yesterday", 
+                url: "https://audio.jukehost.co.uk/aRDwAN2KfAQ3rC2SqPdxEbF3eCtsz6A5", 
+                duration: "2:49",
+                lyrics: [
+                    "Goodbye, yesterday's tears and pain,",
+                    "Washed clean by morning's gentle rain.",
+                    "Thank You, God, for this brand new start,",
+                    "Hope rising fresh within my heart.",
+                    "Sunlight chases shadows long,",
+                    "To Your mercy we belong.",
+                    "",
+                    "Oh, Today! Your freedom's sweet!",
+                    "Lift our souls with dancing feet!",
+                    "With every breath, Your love we feel,",
+                    "Grace is true, and mercy's real!",
+                    "Let the bağlama ring, the modern beat ignite,",
+                    "We dance in Your forgiving light!",
+                    "",
+                    "Golden Horn shines, troubles fade away,",
+                    "Thanking God for this blessed day.",
+                    "This rhythm divine, a joyful sound,",
+                    "In Your loving arms we're found."
+                ]
+            },
+            { 
+                id: 4, 
+                name: "Run It", 
+                url: "https://audio.jukehost.co.uk/rJ2qe2cxumUkdpqjXBzgIsPw5xfsWLNh", 
+                duration: "5:00",
+                lyrics: [
+                    "Yeah... run it... run it... check it.",
+                    "",
+                    "Lights down low, feel the bassline creep",
+                    "In my soul, yeah, the promise I keep",
+                    "Floor is shaking, heartbeat in my chest",
+                    "Gonna show 'em all how I pass the test",
+                    "",
+                    "One look, one touch, feel the energy rise",
+                    "See the fire reflected in your eyes",
+                    "The world disappears, it's just you and the sound",
+                    "Yeah, watch me now as I take the crown",
+                    "",
+                    "Run it, own it, lock it, show it",
+                    "Beat drops down and you already know it",
+                    "Flip it, switch it, don't you ever quit it",
+                    "This whole night, yeah, we're about to get it",
+                    "",
+                    "See the crowd moving, swaying side to side",
+                    "In this moment, nowhere left to hide",
+                    "Every single move, yeah, they're watching me",
+                    "Set the tempo, feel it, wild and free",
+                    "",
+                    "One look, one touch, feel the energy rise",
+                    "See the fire reflected in your eyes",
+                    "The world disappears, it's just you and the sound",
+                    "Yeah, watch me now as I take the crown",
+                    "",
+                    "Run it, own it, lock it, show it",
+                    "Beat drops down and you already know it",
+                    "Flip it, switch it, don't you ever quit it",
+                    "This whole night, yeah, we're about to get it",
+                    "",
+                    "Just breathe... feel the sound",
+                    "Let the rhythm take you, all around",
+                    "From the ceiling to the ground",
+                    "This is where the magic's found",
+                    "",
+                    "Run it, own it, lock it, show it",
+                    "Beat drops down and you already know it",
+                    "Flip it, switch it, don't you ever quit it",
+                    "This whole night, yeah, we're about to get it",
+                    "",
+                    "Run it... own it...",
+                    "Flip it... switch it...",
+                    "Yeah... we run the night."
+                ]
+            },
+            { 
+                id: 5, 
+                name: "Söndüremezler", 
+                url: "https://audio.jukehost.co.uk/ji9ogU5yJ3bkAatfaf4RO6FpV2YAgDQK", 
+                duration: "3:24",
+                lyrics: [
+                    "Ne denilse, ne tekrarlansa,",
+                    "Sen kalbimde tek ve bir tanesin.",
+                    "Gözlerinde gördüm cümle alemi,",
+                    "O rüya gibi ömür, sensin en derin.",
+                    "",
+                    "Ne söylerlerse söylesinler,",
+                    "Benden uzaklaşamazsın, değişemem.",
+                    "Daha da güçlenir bu sevgi,",
+                    "İsterlerse güneşi söndürmeye çalışsınlar!",
+                    "Söndüremezler! Söndüremezler!",
+                    "",
+                    "Aramıza bin fersah koysalar,",
+                    "Bu kader bize gökyüzünde yazılmış.",
+                    "Son nefesime kadar, ey kaderim,",
+                    "Sana yine de gelirdim, peşinden koşardım.",
+                    "",
+                    "Ne söylerlerse söylesinler,",
+                    "Benden uzaklaşamazsın, değişemem.",
+                    "Daha da güçlenir bu sevgi,",
+                    "İsterlerse güneşi söndürmeye çalışsınlar!",
+                    "Söndüremezler! Söndüremezler!",
+                    "",
+                    "Neden almak istiyorlar kalbimden seni?",
+                    "Neden suçluyor herkes bu sevgiyi?",
+                    "",
+                    "Ne söylerlerse söylesinler,",
+                    "Benden uzaklaşamazsın, değişemem!",
+                    "Daha da güçlenir bu sevgi,",
+                    "İsterlerse GÜNEŞİ SÖNDÜRMEYE ÇALIŞSINLAR!",
+                    "SÖNDÜREMEZLER!"
+                ]
+            },
+            { 
+                id: 6, 
+                name: "YAR YAR", 
+                url: "https://audio.jukehost.co.uk/P4HsEtSDGNmBevczBrJLakNOt3fweydf", 
+                duration: "2:26",
+                lyrics: [
+                    "Gözlerinde bir ışık parlıyor,",
+                    "Yüklerini bırak, gel yanıma!",
+                    "Dünya bizimle birlikte dönsün,",
+                    "Bu gece sonsuz, inan bana.",
+                    "",
+                    "Eller havada, kalpler tek!",
+                    "Zamana meydan, haydi gel!",
+                    "Acılar uçup gitsin,",
+                    "Yeni bir gün doğsun.",
+                    "",
+                    "Yüksek sesle haykır: 'Yar yar yar!'",
+                    "Dans et! Özgürce dön!",
+                    "Yan yana, hep beraber,",
+                    "Bu aşk hiç sönmesin!",
+                    "Yüreklerde tek nefes,",
+                    "Gökyüzü bize gülsün!",
+                    "",
+                    "Adımların ritmi sarsın,",
+                    "Geceyi biz yıkalım!",
+                    "Sözümüz var: Hep birlikte,",
+                    "Yarınlara koşalım!",
+                    "",
+                    "Aşk ateşi yandı,",
+                    "Sönmez bu bağ, bu sevda!",
+                    "Sadakat bizim yoldaş,",
+                    "Unutma: 'Tek yürek oldukça!'",
+                    "",
+                    "Yüksek sesle haykır: 'Yar yar yar!'",
+                    "Dans et! Özgürce dön!",
+                    "Yan yana, hep beraber,",
+                    "Bu aşk hiç sönmesin!",
+                    "Yüreklerde tek nefes,",
+                    "Gökyüzü bize gülsün!",
+                    "",
+                    "Ah, yar yar yar...",
+                    "Bu gece sonsuz bizde!",
+                    "Yar yar yar...",
+                    "Hepimiz biriz işte!"
+                ]
+            }
         ];
 
         // Global variables
@@ -563,11 +896,32 @@
         let source;
         let audioElement;
         let isPlaying = false;
-        let isLooping = false;
-        let isShuffling = false;
         let currentTrackIndex = 0;
         let animationId;
-        let matrixInterval;
+        let gridInterval;
+
+        // Sound effects using Web Audio API
+        function playClickSound() {
+            try {
+                const clickContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = clickContext.createOscillator();
+                const gainNode = clickContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(clickContext.destination);
+                
+                oscillator.frequency.setValueAtTime(800, clickContext.currentTime);
+                oscillator.frequency.exponentialRampToValueAtTime(200, clickContext.currentTime + 0.05);
+                
+                gainNode.gain.setValueAtTime(0.3, clickContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, clickContext.currentTime + 0.05);
+                
+                oscillator.start(clickContext.currentTime);
+                oscillator.stop(clickContext.currentTime + 0.05);
+            } catch (e) {
+                console.log("Sound effect not supported");
+            }
+        }
 
         // Initialize the player
         function initPlayer() {
@@ -579,7 +933,7 @@
             try {
                 audioContext = new (window.AudioContext || window.webkitAudioContext)();
                 analyser = audioContext.createAnalyser();
-                analyser.fftSize = 64;
+                analyser.fftSize = 256;
                 
                 source = audioContext.createMediaElementSource(audioElement);
                 source.connect(analyser);
@@ -593,8 +947,8 @@
             audioElement.addEventListener('timeupdate', updateProgress);
             audioElement.addEventListener('ended', handleTrackEnd);
             
-            // Set initial volume
-            audioElement.volume = document.getElementById('volumeSlider').value / 100;
+            // Set initial volume to 100%
+            audioElement.volume = 1.0;
             
             // Initialize playlist
             renderPlaylist();
@@ -602,8 +956,12 @@
             // Initialize visualizer
             initVisualizer();
             
-            // Start matrix background
-            matrixInterval = setInterval(drawMatrix, 35);
+            // Start grid background
+            gridInterval = setInterval(drawGrid, 50);
+            
+            // Set up lyrics panel
+            document.getElementById('showLyricsBtn').addEventListener('click', showLyricsPanel);
+            document.getElementById('closeLyricsBtn').addEventListener('click', hideLyricsPanel);
         }
 
         // Render the playlist
@@ -625,10 +983,46 @@
                 `;
                 
                 trackItem.addEventListener('click', () => {
+                    playClickSound();
                     playTrack(index);
                 });
                 
                 playlist.appendChild(trackItem);
+            });
+        }
+
+        // Show lyrics panel
+        function showLyricsPanel() {
+            playClickSound();
+            document.getElementById('lyricsPanel').style.display = 'block';
+            updateLyrics();
+        }
+
+        // Hide lyrics panel
+        function hideLyricsPanel() {
+            playClickSound();
+            document.getElementById('lyricsPanel').style.display = 'none';
+        }
+
+        // Update lyrics display
+        function updateLyrics() {
+            const lyricsContent = document.getElementById('lyricsContent');
+            const currentTrack = tracks[currentTrackIndex];
+            
+            if (!currentTrack.lyrics) {
+                lyricsContent.innerHTML = '<div class="lyrics-line">No lyrics available for this track</div>';
+                return;
+            }
+            
+            // Clear previous lyrics
+            lyricsContent.innerHTML = '';
+            
+            // Add all lyrics lines
+            currentTrack.lyrics.forEach((line, index) => {
+                const lyricLine = document.createElement('div');
+                lyricLine.className = 'lyrics-line';
+                lyricLine.textContent = line;
+                lyricsContent.appendChild(lyricLine);
             });
         }
 
@@ -649,6 +1043,11 @@
             
             // Update active track in playlist
             renderPlaylist();
+            
+            // Update lyrics if panel is open
+            if (document.getElementById('lyricsPanel').style.display === 'block') {
+                updateLyrics();
+            }
             
             // Play the track
             togglePlayPause();
@@ -682,14 +1081,7 @@
 
         // Handle track end
         function handleTrackEnd() {
-            if (isLooping) {
-                audioElement.currentTime = 0;
-                audioElement.play();
-            } else if (isShuffling) {
-                playRandomTrack();
-            } else {
-                playNextTrack();
-            }
+            playNextTrack();
         }
 
         // Play next track
@@ -701,17 +1093,6 @@
         // Play previous track
         function playPrevTrack() {
             currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
-            playTrack(currentTrackIndex);
-        }
-
-        // Play random track
-        function playRandomTrack() {
-            let newIndex;
-            do {
-                newIndex = Math.floor(Math.random() * tracks.length);
-            } while (newIndex === currentTrackIndex && tracks.length > 1);
-            
-            currentTrackIndex = newIndex;
             playTrack(currentTrackIndex);
         }
 
@@ -743,23 +1124,6 @@
             isPlaying = !isPlaying;
         }
 
-        // Toggle loop
-        function toggleLoop() {
-            isLooping = !isLooping;
-            audioElement.loop = isLooping;
-            document.getElementById('loopBtn').style.background = isLooping ? 
-                'rgba(0, 255, 0, 0.1)' : 
-                'transparent';
-        }
-
-        // Toggle shuffle
-        function toggleShuffle() {
-            isShuffling = !isShuffling;
-            document.getElementById('shuffleBtn').style.background = isShuffling ? 
-                'rgba(0, 255, 0, 0.1)' : 
-                'transparent';
-        }
-
         // Initialize visualizer
         function initVisualizer() {
             const canvas = document.getElementById('waveCanvas');
@@ -781,7 +1145,7 @@
             animateVisualizer();
         }
 
-        // Animate visualizer
+        // Animate visualizer - Simple Elegant Waves
         function animateVisualizer() {
             const canvas = document.getElementById('waveCanvas');
             const ctx = canvas.getContext('2d');
@@ -796,37 +1160,19 @@
                 const dataArray = new Uint8Array(bufferLength);
                 analyser.getByteFrequencyData(dataArray);
                 
-                // Draw frequency bars
-                const barWidth = canvas.width / bufferLength;
-                let x = 0;
+                // Draw simple elegant waves
+                const centerY = canvas.height / 2;
+                const sliceWidth = canvas.width / bufferLength;
                 
-                for (let i = 0; i < bufferLength; i++) {
-                    const barHeight = (dataArray[i] / 255) * canvas.height;
-                    
-                    // Create gradient
-                    const gradient = ctx.createLinearGradient(0, canvas.height - barHeight, 0, canvas.height);
-                    gradient.addColorStop(0, '#0f0');
-                    gradient.addColorStop(1, '#8f8');
-                    
-                    ctx.fillStyle = gradient;
-                    ctx.fillRect(x, canvas.height - barHeight, barWidth - 1, barHeight);
-                    
-                    x += barWidth;
-                }
-                
-                // Draw wave line
+                // Primary wave - very thin and elegant
                 ctx.strokeStyle = '#0f0';
-                ctx.lineWidth = 1.5;
-                ctx.shadowBlur = 8;
-                ctx.shadowColor = '#0f0';
+                ctx.lineWidth = 1;
                 ctx.beginPath();
                 
-                const sliceWidth = canvas.width / bufferLength;
-                x = 0;
-                
+                let x = 0;
                 for (let i = 0; i < bufferLength; i++) {
                     const v = dataArray[i] / 128.0;
-                    const y = v * canvas.height / 2;
+                    const y = centerY + (v * centerY / 3) * Math.sin(x * 0.02);
                     
                     if (i === 0) {
                         ctx.moveTo(x, y);
@@ -836,25 +1182,72 @@
                     
                     x += sliceWidth;
                 }
-                
                 ctx.stroke();
-                ctx.shadowBlur = 0;
+                
+                // Secondary wave - very subtle
+                ctx.strokeStyle = 'rgba(0, 255, 0, 0.3)';
+                ctx.lineWidth = 0.5;
+                ctx.beginPath();
+                
+                x = 0;
+                for (let i = 0; i < bufferLength; i += 2) {
+                    const v = dataArray[i] / 128.0;
+                    const y = centerY - (v * centerY / 4) * Math.cos(x * 0.015);
+                    
+                    if (i === 0) {
+                        ctx.moveTo(x, y);
+                    } else {
+                        ctx.lineTo(x, y);
+                    }
+                    
+                    x += sliceWidth * 2;
+                }
+                ctx.stroke();
+                
+                // Draw minimalist frequency dots
+                ctx.fillStyle = 'rgba(0, 255, 0, 0.6)';
+                const dotCount = 8;
+                const dotSpacing = canvas.width / (dotCount + 1);
+                
+                for (let i = 1; i <= dotCount; i++) {
+                    const dotIndex = Math.floor(i * bufferLength / (dotCount + 1));
+                    const dotSize = dataArray[dotIndex] / 255 * 2;
+                    const dotX = i * dotSpacing;
+                    const dotY = centerY + (Math.sin(Date.now() * 0.001 + i) * 5);
+                    
+                    if (dotSize > 0.3) {
+                        ctx.beginPath();
+                        ctx.arc(dotX, dotY, dotSize, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                }
+                
+                // Draw center line
+                ctx.strokeStyle = 'rgba(0, 255, 0, 0.1)';
+                ctx.lineWidth = 0.3;
+                ctx.beginPath();
+                ctx.moveTo(0, centerY);
+                ctx.lineTo(canvas.width, centerY);
+                ctx.stroke();
             }
             
             animationId = requestAnimationFrame(animateVisualizer);
         }
 
-        // Set up event listeners
-        document.getElementById('playPauseBtn').addEventListener('click', togglePlayPause);
-        document.getElementById('prevBtn').addEventListener('click', playPrevTrack);
-        document.getElementById('nextBtn').addEventListener('click', playNextTrack);
-        document.getElementById('loopBtn').addEventListener('click', toggleLoop);
-        document.getElementById('shuffleBtn').addEventListener('click', toggleShuffle);
-
-        document.getElementById('volumeSlider').addEventListener('input', () => {
-            if (audioElement) {
-                audioElement.volume = document.getElementById('volumeSlider').value / 100;
-            }
+        // Set up event listeners with sound effects
+        document.getElementById('playPauseBtn').addEventListener('click', () => {
+            playClickSound();
+            togglePlayPause();
+        });
+        
+        document.getElementById('prevBtn').addEventListener('click', () => {
+            playClickSound();
+            playPrevTrack();
+        });
+        
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            playClickSound();
+            playNextTrack();
         });
 
         // Initialize on load
@@ -866,9 +1259,9 @@
             canvas.width = canvas.offsetWidth;
             canvas.height = canvas.offsetHeight;
             
-            // Resize matrix canvas
-            matrixCanvas.width = window.innerWidth;
-            matrixCanvas.height = window.innerHeight;
+            // Resize grid canvas
+            gridCanvas.width = window.innerWidth;
+            gridCanvas.height = window.innerHeight;
         });
     </script>
 </body>
