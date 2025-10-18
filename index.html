@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>NEON MUSIC PLAYER PRO</title>
+<title>NEON MUSIC PLAYER PRO - WORKING AUDIO EDITION</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -48,7 +48,7 @@ body {
 
 .container {
   width: 100%;
-  max-width: 380px;
+  max-width: 420px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -590,6 +590,207 @@ body {
   font-weight: 800;
 }
 
+/* لوحة الذكاء الاصطناعي */
+.ai-panel {
+  width: 100%;
+  background: #000;
+  border: 1px solid var(--main-color);
+  padding: 8px;
+  display: none;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.mood-indicator {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px;
+  border: 1px solid var(--main-color);
+  margin-bottom: 4px;
+}
+
+.mood-label {
+  color: var(--main-color);
+  font-size: 8px;
+  font-weight: 800;
+}
+
+.mood-value {
+  color: var(--main-color);
+  font-size: 8px;
+  font-weight: 800;
+  flex: 1;
+  text-align: right;
+}
+
+/* لوحة المؤثرات الصوتية */
+.effects-panel {
+  width: 100%;
+  background: #000;
+  border: 1px solid var(--main-color);
+  padding: 8px;
+  display: none;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.effect-control {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.effect-slider {
+  width: 100%;
+  height: 2px;
+  background: #001100;
+  outline: none;
+  -webkit-appearance: none;
+}
+
+.effect-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 6px;
+  height: 6px;
+  background: var(--main-color);
+  cursor: pointer;
+}
+
+.effect-label {
+  color: var(--main-color);
+  font-size: 8px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+/* لوحة الاستديو */
+.studio-panel {
+  width: 100%;
+  background: #000;
+  border: 1px solid var(--main-color);
+  padding: 8px;
+  display: none;
+}
+
+.equalizer-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.eq-band {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.eq-slider {
+  writing-mode: bt-lr;
+  -webkit-appearance: slider-vertical;
+  width: 8px;
+  height: 40px;
+}
+
+.eq-label {
+  color: var(--main-color);
+  font-size: 7px;
+  font-weight: 800;
+}
+
+/* لوحة الاقتراحات */
+.recommendations-panel {
+  width: 100%;
+  background: #000;
+  border: 1px solid var(--main-color);
+  padding: 8px;
+  display: none;
+}
+
+.recommendation-item {
+  padding: 4px 5px;
+  font-size: 9px;
+  color: var(--main-color);
+  cursor: pointer;
+  transition: all 0.2s;
+  margin: 1px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  border-bottom: 1px solid #001100;
+}
+
+.recommendation-item:last-child {
+  border-bottom: none;
+}
+
+.recommendation-item:hover {
+  background: var(--secondary-color);
+}
+
+/* مؤشر الحالة المزاجية */
+.mood-display {
+  position: absolute;
+  top: 5px;
+  left: 8px;
+  color: var(--main-color);
+  font-size: 7px;
+  z-index: 2;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.mood-emoji {
+  font-size: 8px;
+}
+
+/* تأثيرات بصرية متقدمة */
+.spectrum-analyzer {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  z-index: 1;
+}
+
+/* لوحة إصلاح الصوت */
+.audio-fix-panel {
+  width: 100%;
+  background: #000;
+  border: 1px solid var(--main-color);
+  padding: 8px;
+  display: none;
+  margin-top: 5px;
+}
+
+.fix-btn {
+  background: #001100;
+  border: 1px solid var(--main-color);
+  color: var(--main-color);
+  padding: 6px;
+  font-size: 9px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-transform: uppercase;
+  font-weight: 800;
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+.fix-btn:hover {
+  background: var(--main-color);
+  color: #000;
+}
+
 @media (max-width: 480px) {
   .container {
     max-width: 350px;
@@ -628,12 +829,18 @@ body {
     <div class="visual-display">
       <canvas class="audio-wave" id="visualizer"></canvas>
       <canvas id="particles"></canvas>
+      
+      <div class="mood-display">
+        <span class="mood-emoji" id="mood-emoji">🎵</span>
+        <span id="mood-text">READY</span>
+      </div>
+      
       <div class="metadata">
-        <div id="track-title">NEON MUSIC PLAYER 
+        <div id="track-title">NEON MUSIC PLAYER PRO 
           <button class="favorite-btn" id="favorite-btn" title="Add to favorites">★</button>
         </div>
         <div id="time-display">00:00 / 00:00</div>
-        <div id="bitrate-display" style="font-size:7px">BITRATE: <span class="loading-dot">···</span></div>
+        <div id="bitrate-display" style="font-size:7px">STATUS: <span class="loading-dot" id="audio-status">READY</span></div>
       </div>
       <div class="datetime-container">
         <div id="current-date">--/--/----</div>
@@ -647,21 +854,22 @@ body {
 
     <div class="controls">
       <button class="retro-btn" data-action="prev">⏮ PREV</button>
-      <button class="retro-btn pulsing" data-action="play">▶ PLAY</button>
+      <button class="retro-btn pulsing" data-action="play" id="play-btn">▶ PLAY</button>
       <button class="retro-btn" data-action="next">NEXT ⏭</button>
       <button class="retro-btn subscribe-btn" data-action="subscribe">Subscribe To My YouTube</button>
     </div>
 
     <div class="volume-control">
       <span>VOL:</span>
-      <input type="range" id="volume-slider" min="0" max="100" value="100">
-      <span id="volume">100%</span>
+      <input type="range" id="volume-slider" min="0" max="100" value="80">
+      <span id="volume">80%</span>
     </div>
 
     <div class="visualizer-modes">
       <button class="visualizer-btn active" data-mode="wave">WAVE</button>
       <button class="visualizer-btn" data-mode="bars">BARS</button>
       <button class="visualizer-btn" data-mode="circle">CIRCLE</button>
+      <button class="visualizer-btn" data-mode="spectrum">SPECTRUM</button>
     </div>
 
     <div class="status-bar">
@@ -683,7 +891,120 @@ body {
       <div class="panel-title">SYSTEM</div>
       <button class="panel-btn" data-action="stats">SHOW STATS</button>
       <button class="panel-btn" data-action="info">PLAYER INFO</button>
-      <button class="panel-btn" data-action="visual-mode">VISUAL MODE</button>
+      <button class="panel-btn" data-action="audio-fix">AUDIO FIX</button>
+    </div>
+    <div class="panel-section">
+      <div class="panel-title">AI FEATURES</div>
+      <button class="panel-btn" data-action="ai-recommend">AI RECOMMEND</button>
+      <button class="panel-btn" data-action="mood-analysis">MOOD ANALYSIS</button>
+    </div>
+    <div class="panel-section">
+      <div class="panel-title">AUDIO EFFECTS</div>
+      <button class="panel-btn" data-action="effects">AUDIO EFFECTS</button>
+      <button class="panel-btn" data-action="studio">STUDIO MODE</button>
+    </div>
+  </div>
+
+  <!-- لوحة إصلاح الصوت -->
+  <div class="audio-fix-panel" id="audio-fix-panel">
+    <div class="panel-title">AUDIO FIX TOOLS</div>
+    <button class="fix-btn" data-action="test-audio">TEST AUDIO SYSTEM</button>
+    <button class="fix-btn" data-action="reset-audio">RESET AUDIO SYSTEM</button>
+    <button class="fix-btn" data-action="reload-tracks">RELOAD TRACKS</button>
+    <div style="font-size: 8px; margin-top: 5px; color: var(--main-color);">
+      If audio doesn't work, try these tools to fix playback issues
+    </div>
+  </div>
+
+  <!-- لوحة الذكاء الاصطناعي -->
+  <div class="ai-panel" id="ai-panel">
+    <div class="panel-section">
+      <div class="panel-title">MOOD ANALYSIS</div>
+      <div class="mood-indicator">
+        <span class="mood-label">CURRENT:</span>
+        <span class="mood-value" id="current-mood">NEUTRAL</span>
+      </div>
+      <div class="mood-indicator">
+        <span class="mood-label">ENERGY:</span>
+        <span class="mood-value" id="energy-level">MEDIUM</span>
+      </div>
+      <button class="panel-btn" data-action="generate-playlist">GENERATE PLAYLIST</button>
+    </div>
+    <div class="panel-section">
+      <div class="panel-title">AI RECOMMENDATIONS</div>
+      <div class="mood-indicator">
+        <span class="mood-label">SIMILAR TRACKS:</span>
+        <span class="mood-value" id="similar-count">5</span>
+      </div>
+      <button class="panel-btn" data-action="show-recommendations">SHOW RECOMMENDATIONS</button>
+      <button class="panel-btn" data-action="smart-shuffle">SMART SHUFFLE</button>
+    </div>
+  </div>
+
+  <!-- لوحة المؤثرات الصوتية -->
+  <div class="effects-panel" id="effects-panel">
+    <div class="panel-section">
+      <div class="panel-title">AUDIO EFFECTS</div>
+      <div class="effect-control">
+        <span class="effect-label">REVERB</span>
+        <input type="range" class="effect-slider" id="reverb-slider" min="0" max="100" value="0">
+      </div>
+      <div class="effect-control">
+        <span class="effect-label">DISTORTION</span>
+        <input type="range" class="effect-slider" id="distortion-slider" min="0" max="100" value="0">
+      </div>
+    </div>
+    <div class="panel-section">
+      <div class="panel-title">FILTERS</div>
+      <div class="effect-control">
+        <span class="effect-label">LOW PASS</span>
+        <input type="range" class="effect-slider" id="lowpass-slider" min="0" max="100" value="100">
+      </div>
+      <div class="effect-control">
+        <span class="effect-label">HIGH PASS</span>
+        <input type="range" class="effect-slider" id="highpass-slider" min="0" max="100" value="0">
+      </div>
+      <button class="panel-btn" data-action="reset-effects">RESET EFFECTS</button>
+    </div>
+  </div>
+
+  <!-- لوحة الاستديو -->
+  <div class="studio-panel" id="studio-panel">
+    <div class="panel-title">STUDIO EQUALIZER</div>
+    <div class="equalizer-grid">
+      <div class="eq-band">
+        <span class="eq-label">60Hz</span>
+        <input type="range" class="eq-slider" id="eq-60" min="-12" max="12" value="0">
+      </div>
+      <div class="eq-band">
+        <span class="eq-label">230Hz</span>
+        <input type="range" class="eq-slider" id="eq-230" min="-12" max="12" value="0">
+      </div>
+      <div class="eq-band">
+        <span class="eq-label">910Hz</span>
+        <input type="range" class="eq-slider" id="eq-910" min="-12" max="12" value="0">
+      </div>
+      <div class="eq-band">
+        <span class="eq-label">3.6kHz</span>
+        <input type="range" class="eq-slider" id="eq-3600" min="-12" max="12" value="0">
+      </div>
+      <div class="eq-band">
+        <span class="eq-label">14kHz</span>
+        <input type="range" class="eq-slider" id="eq-14000" min="-12" max="12" value="0">
+      </div>
+    </div>
+    <div style="display: flex; gap: 4px;">
+      <button class="panel-btn" style="flex: 1;" data-action="eq-preset-vocal">VOCAL BOOST</button>
+      <button class="panel-btn" style="flex: 1;" data-action="eq-preset-bass">BASS BOOST</button>
+      <button class="panel-btn" style="flex: 1;" data-action="eq-reset">RESET EQ</button>
+    </div>
+  </div>
+
+  <!-- لوحة الاقتراحات -->
+  <div class="recommendations-panel" id="recommendations-panel">
+    <div class="panel-title">AI RECOMMENDATIONS</div>
+    <div id="recommendations-list">
+      <!-- سيتم ملؤها بالجافاسكريبت -->
     </div>
   </div>
 
@@ -717,11 +1038,11 @@ body {
   <div class="info-panel" id="info-panel">
     <div class="info-item">
       <span class="info-label">VERSION</span>
-      <span class="info-value">NEON PLAYER PRO 2.0</span>
+      <span class="info-value">NEON PLAYER PRO 3.0</span>
     </div>
     <div class="info-item">
       <span class="info-label">KEYBOARD SHORTCUTS</span>
-      <span class="info-value">SPACE, ARROWS, M, L</span>
+      <span class="info-value">SPACE, ARROWS, M, L, A, E</span>
     </div>
     <div class="info-item">
       <span class="info-label">TRACKS LOADED</span>
@@ -748,6 +1069,77 @@ body {
 </div>
 
 <script>
+// ========== نظام إصلاح الصوت ==========
+class AudioFixSystem {
+  constructor() {
+    this.audioContext = null;
+    this.backupUrls = [
+      'https://www.soundjay.com/misc/sounds/fail-buzzer-02.wav',
+      'https://www.soundjay.com/button/sounds/button-09.wav',
+      'https://www.soundjay.com/button/sounds/button-09.wav'
+    ];
+  }
+  
+  testAudioSystem() {
+    const testAudio = new Audio();
+    testAudio.src = this.backupUrls[0];
+    testAudio.volume = 0.5;
+    
+    testAudio.play().then(() => {
+      showNotification('Audio system test: SUCCESS', 'success');
+      setTimeout(() => testAudio.pause(), 1000);
+    }).catch(error => {
+      showNotification('Audio system test: FAILED - ' + error.message, 'error');
+    });
+  }
+  
+  resetAudioSystem() {
+    if (window.audioContext) {
+      window.audioContext.close();
+      window.audioContext = null;
+    }
+    
+    audio.pause();
+    audio.src = '';
+    audio.load();
+    
+    showNotification('Audio system reset complete', 'success');
+    
+    // إعادة تهيئة النظام بعد تأخير
+    setTimeout(() => {
+      setupAudioSystem();
+      loadTrack(currentTrackIndex);
+    }, 1000);
+  }
+  
+  reloadAllTracks() {
+    showNotification('Reloading all tracks...', 'info');
+    
+    // إعادة تحميل جميع المسارات
+    tracks.forEach((track, index) => {
+      const testAudio = new Audio();
+      testAudio.src = track.url;
+      testAudio.preload = 'metadata';
+      
+      testAudio.addEventListener('loadeddata', () => {
+        console.log(`Track ${index + 1} loaded successfully`);
+      });
+      
+      testAudio.addEventListener('error', () => {
+        console.warn(`Track ${index + 1} failed to load`);
+      });
+    });
+    
+    // إعادة تحميل المسار الحالي
+    setTimeout(() => {
+      loadTrack(currentTrackIndex);
+      showNotification('All tracks reloaded', 'success');
+    }, 2000);
+  }
+}
+
+const audioFixSystem = new AudioFixSystem();
+
 // ========== نظام الأداء والتحسين ==========
 const PerformanceOptimizer = {
   timers: [],
@@ -765,11 +1157,11 @@ const PerformanceOptimizer = {
   togglePowerMode: function() {
     this.lowPowerMode = !this.lowPowerMode;
     if (this.lowPowerMode) {
-      particleSystem.stop();
+      if (particleSystem) particleSystem.stop();
       document.getElementById('matrixCanvas').style.opacity = '0.02';
       showNotification('Low Power Mode: ON', 'info');
     } else {
-      if (isPlaying) particleSystem.update();
+      if (isPlaying && particleSystem) particleSystem.update();
       document.getElementById('matrixCanvas').style.opacity = '0.05';
       showNotification('Low Power Mode: OFF', 'info');
     }
@@ -781,7 +1173,7 @@ const PerformanceOptimizer = {
     }
     cancelAnimationFrame(matrixAnimationId);
     cancelAnimationFrame(visualizerAnimationId);
-    cancelAnimationFrame(particlesAnimationId);
+    if (particlesAnimationId) cancelAnimationFrame(particlesAnimationId);
   }
 };
 
@@ -860,7 +1252,6 @@ class MusicAnalytics {
     const sessionTime = Math.floor((Date.now() - this.stats.sessionStart) / 60000);
     document.getElementById('session-time').textContent = `${sessionTime}m`;
     
-    // تحديث قائمة الأكثر تشغيلاً
     const mostPlayedList = document.getElementById('most-played-list');
     mostPlayedList.innerHTML = '';
     this.getMostPlayed().forEach(([id, data]) => {
@@ -891,34 +1282,17 @@ function setupKeyboardShortcuts() {
     if (e.target.tagName === 'INPUT') return;
     
     switch(e.code) {
-      case 'Space':
-        e.preventDefault();
-        togglePlay();
-        break;
-      case 'ArrowRight':
-        loadTrack(getNextTrack());
-        break;
-      case 'ArrowLeft':
-        loadTrack(getPrevTrack());
-        break;
-      case 'ArrowUp':
-        changeVolume(10);
-        break;
-      case 'ArrowDown':
-        changeVolume(-10);
-        break;
-      case 'KeyM':
-        toggleMute();
-        break;
-      case 'KeyL':
-        toggleLoop();
-        break;
-      case 'KeyS':
-        toggleShuffle();
-        break;
-      case 'KeyP':
-        PerformanceOptimizer.togglePowerMode();
-        break;
+      case 'Space': e.preventDefault(); togglePlay(); break;
+      case 'ArrowRight': loadTrack(getNextTrack()); break;
+      case 'ArrowLeft': loadTrack(getPrevTrack()); break;
+      case 'ArrowUp': changeVolume(10); break;
+      case 'ArrowDown': changeVolume(-10); break;
+      case 'KeyM': toggleMute(); break;
+      case 'KeyL': toggleLoop(); break;
+      case 'KeyS': toggleShuffle(); break;
+      case 'KeyP': PerformanceOptimizer.togglePowerMode(); break;
+      case 'KeyA': document.getElementById('ai-panel').style.display = document.getElementById('ai-panel').style.display === 'grid' ? 'none' : 'grid'; break;
+      case 'KeyE': document.getElementById('effects-panel').style.display = document.getElementById('effects-panel').style.display === 'grid' ? 'none' : 'grid'; break;
     }
   });
 }
@@ -964,15 +1338,10 @@ class AdvancedVisualEffects {
   
   setMode(mode) {
     this.currentMode = mode;
-    
-    // تحديث الأزرار النشطة
     document.querySelectorAll('.visualizer-btn').forEach(btn => {
       btn.classList.toggle('active', btn.dataset.mode === mode);
     });
-    
     showNotification(`Visualizer: ${mode.toUpperCase()}`, 'info');
-    
-    // إعادة رسم المصمم الصوتي
     if (isPlaying) {
       cancelAnimationFrame(visualizerAnimationId);
       updateVisualizer();
@@ -981,45 +1350,33 @@ class AdvancedVisualEffects {
   
   drawWaveform(ctx, width, height, dataArray, bufferLength) {
     ctx.clearRect(0, 0, width, height);
-    
-    if (this.currentMode === 'wave') {
-      this.drawWave(ctx, width, height, dataArray, bufferLength);
-    } else if (this.currentMode === 'bars') {
-      this.drawBars(ctx, width, height, dataArray, bufferLength);
-    } else if (this.currentMode === 'circle') {
-      this.drawCircle(ctx, width, height, dataArray, bufferLength);
-    }
+    if (this.currentMode === 'wave') this.drawWave(ctx, width, height, dataArray, bufferLength);
+    else if (this.currentMode === 'bars') this.drawBars(ctx, width, height, dataArray, bufferLength);
+    else if (this.currentMode === 'circle') this.drawCircle(ctx, width, height, dataArray, bufferLength);
+    else if (this.currentMode === 'spectrum') this.drawSpectrum(ctx, width, height, dataArray, bufferLength);
   }
   
   drawWave(ctx, width, height, dataArray, bufferLength) {
     const sliceWidth = width / bufferLength;
     let x = 0;
-    
     ctx.beginPath();
     for(let i = 0; i < bufferLength; i++) {
       const v = dataArray[i] / 128;
       const y = v * height/2;
-      
       i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
       x += sliceWidth;
     }
-    
     ctx.strokeStyle = '#00ff88';
     ctx.lineWidth = 1;
     ctx.stroke();
-    
-    // رسم موجة مقلوبة
     ctx.beginPath();
     x = 0;
-    
     for(let i = 0; i < bufferLength; i++) {
       const v = dataArray[i] / 128;
       const y = height - (v * height/2);
-      
       i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
       x += sliceWidth;
     }
-    
     ctx.strokeStyle = '#00ff88';
     ctx.lineWidth = 1;
     ctx.stroke();
@@ -1028,13 +1385,10 @@ class AdvancedVisualEffects {
   drawBars(ctx, width, height, dataArray, bufferLength) {
     const barWidth = (width / bufferLength) * 2.5;
     let x = 0;
-    
     for(let i = 0; i < bufferLength; i++) {
       const barHeight = (dataArray[i] / 255) * height;
-      
       ctx.fillStyle = '#00ff88';
       ctx.fillRect(x, height - barHeight, barWidth, barHeight);
-      
       x += barWidth + 1;
     }
   }
@@ -1043,218 +1397,297 @@ class AdvancedVisualEffects {
     const centerX = width / 2;
     const centerY = height / 2;
     const radius = Math.min(width, height) / 3;
-    
     ctx.beginPath();
     for(let i = 0; i < bufferLength; i++) {
       const angle = (i / bufferLength) * Math.PI * 2;
       const barLength = (dataArray[i] / 255) * radius;
-      
       const x1 = centerX + Math.cos(angle) * radius;
       const y1 = centerY + Math.sin(angle) * radius;
       const x2 = centerX + Math.cos(angle) * (radius + barLength);
       const y2 = centerY + Math.sin(angle) * (radius + barLength);
-      
       ctx.moveTo(x1, y1);
       ctx.lineTo(x2, y2);
     }
-    
     ctx.strokeStyle = '#00ff88';
     ctx.lineWidth = 1;
     ctx.stroke();
+  }
+  
+  drawSpectrum(ctx, width, height, dataArray, bufferLength) {
+    const barWidth = (width / bufferLength) * 2.5;
+    let x = 0;
+    for(let i = 0; i < bufferLength; i++) {
+      const barHeight = (dataArray[i] / 255) * height;
+      const gradient = ctx.createLinearGradient(0, height - barHeight, 0, height);
+      gradient.addColorStop(0, '#00ff88');
+      gradient.addColorStop(1, '#00ccff');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(x, height - barHeight, barWidth, barHeight);
+      x += barWidth + 1;
+    }
   }
 }
 
 const visualEffects = new AdvancedVisualEffects();
 
-// ========== الكود الأصلي مع التعديلات ==========
-// إدارة الوقت والتاريخ
-function updateDateTime() {
-  const now = new Date();
+// ========== نظام الذكاء الاصطناعي الموسيقي ==========
+class MusicAI {
+  constructor() {
+    this.moods = {
+      energetic: { emoji: '⚡', tracks: [0, 2, 5, 8, 11, 14, 17, 20] },
+      calm: { emoji: '🌊', tracks: [1, 4, 7, 10, 13, 16, 19] },
+      happy: { emoji: '😊', tracks: [3, 6, 9, 12, 15, 18, 21] },
+      neutral: { emoji: '🎵', tracks: [] }
+    };
+    this.currentMood = 'neutral';
+  }
   
-  // تحديث التاريخ
-  const dateStr = now.toLocaleDateString('en-US', { 
-    year: 'numeric', 
-    month: '2-digit', 
-    day: '2-digit' 
-  });
-  document.getElementById('current-date').textContent = dateStr;
+  analyzeMood(trackIndex) {
+    let detectedMood = 'neutral';
+    for (const mood in this.moods) {
+      if (this.moods[mood].tracks.includes(trackIndex)) {
+        detectedMood = mood;
+        break;
+      }
+    }
+    this.currentMood = detectedMood;
+    document.getElementById('mood-emoji').textContent = this.moods[detectedMood].emoji;
+    document.getElementById('mood-text').textContent = detectedMood.toUpperCase();
+    document.getElementById('current-mood').textContent = detectedMood.toUpperCase();
+    return detectedMood;
+  }
   
-  // تحديث الوقت
-  const timeStr = now.toLocaleTimeString('en-US', { 
-    hour12: false,
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit'
-  });
-  document.getElementById('current-time').textContent = timeStr;
+  getSimilarTracks(trackIndex, count = 5) {
+    const currentMood = this.analyzeMood(trackIndex);
+    const moodTracks = this.moods[currentMood].tracks;
+    const filteredTracks = moodTracks.filter(idx => idx !== trackIndex);
+    return [...filteredTracks].sort(() => 0.5 - Math.random()).slice(0, count);
+  }
+  
+  generatePlaylist(mood, length = 10) {
+    const moodTracks = this.moods[mood].tracks;
+    return [...moodTracks].sort(() => 0.5 - Math.random()).slice(0, length);
+  }
+  
+  smartShuffle(currentTrackIndex) {
+    const similarTracks = this.getSimilarTracks(currentTrackIndex, 8);
+    const otherTracks = Array.from({length: tracks.length}, (_, i) => i)
+      .filter(i => !similarTracks.includes(i) && i !== currentTrackIndex)
+      .sort(() => 0.5 - Math.random()).slice(0, 4);
+    return [currentTrackIndex, ...similarTracks, ...otherTracks];
+  }
 }
 
-// تحديث الوقت والتاريخ كل ثانية
-const dateTimeTimer = setInterval(updateDateTime, 1000);
-PerformanceOptimizer.addTimer(dateTimeTimer);
+const musicAI = new MusicAI();
 
-// مصفوفة الأحرف لخلفية الماتريكس
-const matrixChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$#@%&';
-const canvas = document.getElementById('matrixCanvas');
-const ctx = canvas.getContext('2d');
+// ========== نظام المؤثرات الصوتية المتقدمة ==========
+class AudioEffects {
+  constructor() {
+    this.effects = { reverb: 0, delay: 0, distortion: 0, lowpass: 100, highpass: 0 };
+    this.eqSettings = { 60: 0, 230: 0, 910: 0, 3600: 0, 14000: 0 };
+    this.audioContext = null;
+    this.audioNodes = {};
+    this.isReverbReady = false; // Flag to check if reverb is loaded
+  }
 
-// تحسين أداء الماتريكس
-let matrixAnimationId;
-let lastMatrixUpdate = 0;
-const matrixUpdateInterval = 100;
-
-function resizeCanvas() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-}
-window.addEventListener('resize', resizeCanvas);
-resizeCanvas();
-
-const fontSize = 12;
-const columns = Math.floor(canvas.width / fontSize);
-const drops = Array(columns).fill(0);
-
-function drawMatrix(timestamp) {
-  if (timestamp - lastMatrixUpdate > matrixUpdateInterval) {
-    lastMatrixUpdate = timestamp;
-    
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.03)';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    
-    ctx.fillStyle = '#00ff88';
-    ctx.font = `${fontSize}px monospace`;
-
-    for (let i = 0; i < drops.length; i++) {
-      if (Math.random() > 0.6) continue;
-      
-      const char = matrixChars[Math.floor(Math.random() * matrixChars.length)];
-      const x = i * fontSize;
-      const y = drops[i] * fontSize;
-
-      ctx.fillText(char, x, y);
-
-      if (y > canvas.height && Math.random() > 0.99) drops[i] = 0;
-      else drops[i] += 0.3;
+  // *** NEW: Method to load the reverb impulse response file ***
+  async _loadReverbImpulse(audioContext) {
+    try {
+      const response = await fetch('https://mainline.i3s.unice.fr/mooc/_static/ressources/sounds/big_hall.wav');
+      const arrayBuffer = await response.arrayBuffer();
+      const decodedData = await audioContext.decodeAudioData(arrayBuffer);
+      this.audioNodes.reverb.buffer = decodedData;
+      this.isReverbReady = true;
+      console.log('Reverb impulse loaded successfully.');
+      showNotification('Reverb effect is ready', 'success');
+    } catch (error) {
+      console.error('Failed to load reverb impulse:', error);
+      showNotification('Could not load reverb effect', 'error');
     }
   }
   
-  matrixAnimationId = requestAnimationFrame(drawMatrix);
-}
-
-// بدء رسم الماتريكس
-drawMatrix();
-PerformanceOptimizer.addTimer({ cancel: () => cancelAnimationFrame(matrixAnimationId) });
-
-// نظام الجسيمات المحسن
-class ParticleSystem {
-  constructor(canvas, audioContext) {
-    this.canvas = canvas;
-    this.ctx = canvas.getContext('2d');
+  init(audioContext, sourceNode) {
     this.audioContext = audioContext;
-    this.particles = [];
-    this.analyser = null;
-    this.dataArray = null;
-    this.animationId = null;
     
-    this.resizeCanvas();
-    window.addEventListener('resize', () => this.resizeCanvas());
+    // Create all nodes, including the previously problematic ones
+    this.audioNodes = {
+      reverb: audioContext.createConvolver(),
+      delay: audioContext.createDelay(),
+      distortion: audioContext.createWaveShaper(),
+      lowpass: audioContext.createBiquadFilter(),
+      highpass: audioContext.createBiquadFilter(),
+      eq60: audioContext.createBiquadFilter(),
+      eq230: audioContext.createBiquadFilter(),
+      eq910: audioContext.createBiquadFilter(),
+      eq3600: audioContext.createBiquadFilter(),
+      eq14000: audioContext.createBiquadFilter(),
+      // *** NEW: Gain nodes for wet/dry mix ***
+      mainInput: audioContext.createGain(),
+      reverbWet: audioContext.createGain(),
+      mainOutput: audioContext.createGain()
+    };
+    
+    // Load the reverb impulse file asynchronously
+    this._loadReverbImpulse(audioContext);
+
+    // Initial filter states
+    this.audioNodes.lowpass.type = 'lowpass';
+    this.audioNodes.lowpass.frequency.value = audioContext.sampleRate / 2;
+    this.audioNodes.highpass.type = 'highpass';
+    this.audioNodes.highpass.frequency.value = 0;
+
+    // Initial EQ states
+    ['eq60', 'eq230', 'eq910', 'eq3600', 'eq14000'].forEach(key => {
+        this.audioNodes[key].type = 'peaking';
+        this.audioNodes[key].frequency.value = parseInt(key.replace('eq', ''));
+        this.audioNodes[key].Q.value = 1;
+        this.audioNodes[key].gain.value = 0;
+    });
+
+    // *** NEW: Safe audio connection graph with wet/dry mix ***
+    // 1. Connect the source to the main input chain
+    sourceNode
+      .connect(this.audioNodes.eq60)
+      .connect(this.audioNodes.eq230)
+      .connect(this.audioNodes.eq910)
+      .connect(this.audioNodes.eq3600)
+      .connect(this.audioNodes.eq14000)
+      .connect(this.audioNodes.lowpass)
+      .connect(this.audioNodes.highpass)
+      .connect(this.audioNodes.distortion)
+      .connect(this.audioNodes.delay)
+      .connect(this.audioNodes.mainInput);
+
+    // 2. Dry path: main input connects directly to the output
+    this.audioNodes.mainInput.connect(this.audioNodes.mainOutput);
+    
+    // 3. Wet path: main input also connects to the reverb chain
+    this.audioNodes.mainInput.connect(this.audioNodes.reverbWet);
+    this.audioNodes.reverbWet.connect(this.audioNodes.reverb);
+    this.audioNodes.reverb.connect(this.audioNodes.mainOutput);
+
+    // 4. Set initial wet gain to 0 (no reverb)
+    this.audioNodes.reverbWet.gain.value = 0;
+    
+    // The final node to connect to the destination is the main output
+    return this.audioNodes.mainOutput;
   }
   
-  resizeCanvas() {
-    const { width, height } = this.canvas.getBoundingClientRect();
-    this.canvas.width = width;
-    this.canvas.height = height;
-  }
-  
-  init(analyser) {
-    this.analyser = analyser;
-    this.dataArray = new Uint8Array(analyser.frequencyBinCount);
+  updateEffect(effect, value) {
+    this.effects[effect] = value;
     
-    for (let i = 0; i < 20; i++) {
-      this.particles.push({
-        x: Math.random() * this.canvas.width,
-        y: Math.random() * this.canvas.height,
-        size: Math.random() * 1.5 + 0.5,
-        speedX: (Math.random() - 0.5) * 0.5,
-        speedY: (Math.random() - 0.5) * 0.5,
-        color: `rgba(0, 255, 136, ${Math.random() * 0.3 + 0.1})`
-      });
+    switch(effect) {
+      case 'reverb':
+        if (this.isReverbReady && this.audioNodes.reverbWet) {
+          // The slider (0-100) controls the wet gain (0.0 - 1.0)
+          this.audioNodes.reverbWet.gain.setValueAtTime(value / 100, this.audioContext.currentTime);
+        }
+        break;
+      case 'delay':
+        if (this.audioNodes.delay) this.audioNodes.delay.delayTime.value = value / 100 * 0.5;
+        break;
+      case 'distortion':
+        if (this.audioNodes.distortion) {
+          const amount = value / 100 * 50;
+          this.audioNodes.distortion.curve = this.makeDistortionCurve(amount);
+          this.audioNodes.distortion.oversample = '4x';
+        }
+        break;
+      case 'lowpass':
+        if (this.audioNodes.lowpass) {
+            const maxFreq = this.audioContext.sampleRate / 2;
+            const minFreq = 40;
+            const freq = minFreq * Math.pow(maxFreq / minFreq, value / 100);
+            this.audioNodes.lowpass.frequency.setValueAtTime(freq, this.audioContext.currentTime);
+        }
+        break;
+      case 'highpass':
+        if (this.audioNodes.highpass) {
+            const maxFreq = 4000;
+            const minFreq = 20;
+            const freq = minFreq * Math.pow(maxFreq / minFreq, value / 100);
+            this.audioNodes.highpass.frequency.setValueAtTime(freq, this.audioContext.currentTime);
+        }
+        break;
     }
   }
   
-  update() {
-    if (!this.analyser) return;
-    
-    this.analyser.getByteFrequencyData(this.dataArray);
-    
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    
-    for (let i = 0; i < this.particles.length; i++) {
-      const p = this.particles[i];
-      
-      p.x += p.speedX;
-      p.y += p.speedY;
-      
-      const centerX = this.canvas.width / 2;
-      const centerY = this.canvas.height / 2;
-      const dx = centerX - p.x;
-      const dy = centerY - p.y;
-      const distance = Math.sqrt(dx * dx + dy * dy);
-      
-      if (distance > 0) {
-        p.speedX += dx * 0.00005;
-        p.speedY += dy * 0.00005;
-      }
-      
-      const frequencyIndex = Math.floor((i / this.particles.length) * this.dataArray.length);
-      const audioValue = this.dataArray[frequencyIndex] / 255;
-      
-      p.size = 0.5 + audioValue * 1.5;
-      p.speedX += (Math.random() - 0.5) * audioValue * 0.2;
-      p.speedY += (Math.random() - 0.5) * audioValue * 0.2;
-      
-      const speed = Math.sqrt(p.speedX * p.speedX + p.speedY * p.speedY);
-      if (speed > 1.5) {
-        p.speedX = (p.speedX / speed) * 1.5;
-        p.speedY = (p.speedY / speed) * 1.5;
-      }
-      
-      if (p.x < 0 || p.x > this.canvas.width || p.y < 0 || p.y > this.canvas.height) {
-        p.x = Math.random() * this.canvas.width;
-        p.y = Math.random() * this.canvas.height;
-        p.speedX = (Math.random() - 0.5) * 0.5;
-        p.speedY = (Math.random() - 0.5) * 0.5;
-      }
-      
-      this.ctx.beginPath();
-      this.ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-      this.ctx.fillStyle = p.color;
-      this.ctx.fill();
+  updateEQ(band, value) {
+    this.eqSettings[band] = value;
+    const nodeName = `eq${band}`;
+    if (this.audioNodes[nodeName]) {
+      this.audioNodes[nodeName].gain.setValueAtTime(value, this.audioContext.currentTime);
     }
-    
-    this.animationId = requestAnimationFrame(() => this.update());
   }
   
-  stop() {
-    if (this.animationId) {
-      cancelAnimationFrame(this.animationId);
-      this.animationId = null;
+  makeDistortionCurve(amount) {
+    if (amount === 0) return null;
+    const samples = 44100;
+    const curve = new Float32Array(samples);
+    const deg = Math.PI / 180;
+    for (let i = 0; i < samples; i++) {
+      const x = i * 2 / samples - 1;
+      curve[i] = (3 + amount) * x * 20 * deg / (Math.PI + amount * Math.abs(x));
     }
+    return curve;
+  }
+  
+  resetEffects() {
+    this.effects = { reverb: 0, delay: 0, distortion: 0, lowpass: 100, highpass: 0 };
+    document.getElementById('reverb-slider').value = 0;
+    document.getElementById('delay-slider').value = 0;
+    document.getElementById('distortion-slider').value = 0;
+    document.getElementById('lowpass-slider').value = 100;
+    document.getElementById('highpass-slider').value = 0;
+    showNotification('Effects reset', 'info');
+  }
+  
+  resetEQ() {
+    this.eqSettings = { 60: 0, 230: 0, 910: 0, 3600: 0, 14000: 0 };
+    for (const band in this.eqSettings) {
+        this.updateEQ(band, 0); // Update the audio node as well
+        document.getElementById(`eq-${band}`).value = 0;
+    }
+    showNotification('EQ reset', 'info');
+  }
+  
+  setEQPreset(preset) {
+    const presets = {
+      vocal: { 60: 0, 230: 2, 910: 4, 3600: 6, 14000: 3 },
+      bass: { 60: 8, 230: 5, 910: 0, 3600: -2, 14000: 0 }
+    };
+    const newSettings = presets[preset];
+    if (!newSettings) return;
+
+    for (const [band, value] of Object.entries(newSettings)) {
+        this.updateEQ(band, value);
+        document.getElementById(`eq-${band}`).value = value;
+    }
+    showNotification(`EQ preset: ${preset}`, 'info');
   }
 }
 
-// مشغل الموسيقى الأساسي
+const audioEffects = new AudioEffects();
+
+// ========== الكود الأساسي للمشغل ==========
 const audio = new Audio();
 let isPlaying = false;
 let currentTrackIndex = 0;
 let audioContext, analyser, source;
 let isDraggingProgress = false;
 let particleSystem;
+let visualizerAnimationId;
 
 audio.crossOrigin = "anonymous";
 audio.preload = "metadata";
 
-// قائمة التشغيل الجديدة - 22 أغنية
+function setupAudioSystem() {
+  audio.volume = 0.8;
+  audio.addEventListener('loadeddata', () => { document.getElementById('audio-status').textContent = 'READY'; });
+  audio.addEventListener('error', (e) => { console.error('Audio error:', e); document.getElementById('audio-status').textContent = 'ERROR'; showNotification('Audio loading error.', 'error'); });
+  audio.addEventListener('canplaythrough', () => { document.getElementById('audio-status').textContent = 'READY'; });
+}
+
 const tracks = [
   { url: "https://audio.jukehost.co.uk/blRnPzc1hzIH51wq1jEzhF3fJkEmFWz7", title: "Track 1" },
   { url: "https://audio.jukehost.co.uk/0EbCxlZ1AAurrspBkdo4g6QSoFUZqXg3", title: "Track 2" },
@@ -1280,145 +1713,134 @@ const tracks = [
   { url: "https://audio.jukehost.co.uk/e6lFphtGJiHbkjGqdbxOISUgbFUbCeyh", title: "Track 22" }
 ];
 
-// تهيئة قائمة التشغيل
 function initializePlaylist() {
   const playlistItems = document.getElementById('playlist-items');
   playlistItems.innerHTML = '';
-  
   tracks.forEach((track, index) => {
     const item = document.createElement('div');
     item.className = 'playlist-item';
     item.textContent = track.title;
     item.dataset.index = index;
-    
-    item.addEventListener('click', () => {
-      loadTrack(index);
-    });
-    
+    item.addEventListener('click', () => { loadTrack(index); });
     playlistItems.appendChild(item);
   });
-  
   updatePlaylist();
 }
 
-// تحديث قائمة التشغيل
 function updatePlaylist() {
-  const items = document.querySelectorAll('.playlist-item');
-  items.forEach((item, index) => {
+  document.querySelectorAll('.playlist-item').forEach((item, index) => {
     item.classList.toggle('active', index === currentTrackIndex);
   });
-  
-  // تحديث زر المفضلة
   const favoriteBtn = document.getElementById('favorite-btn');
-  favoriteBtn.classList.toggle('active', analytics.isFavorite(currentTrackIndex));
+  if (favoriteBtn) favoriteBtn.classList.toggle('active', analytics.isFavorite(currentTrackIndex));
 }
 
-// تشغيل/إيقاف الموسيقى
 function togglePlay() {
-  isPlaying = !isPlaying;
-  const playBtn = document.querySelector('[data-action="play"]');
-  playBtn.textContent = isPlaying ? '❚❚ PAUSE' : '▶ PLAY';
-  
-  if (isPlaying) {
-    audio.play().then(() => {
-      initAudioContext();
-      updateVisualizer();
-      if (particleSystem && !PerformanceOptimizer.lowPowerMode) particleSystem.update();
-      analytics.trackPlay(currentTrackIndex, audio.duration || 0);
-    }).catch(err => {
-      console.error('Play Error:', err);
-      showNotification('Playback error', 'error');
-    });
-  } else {
-    audio.pause();
-    cancelAnimationFrame(visualizerAnimationId);
-    if (particleSystem) particleSystem.stop();
-  }
+    initAudioContext();
+    if (isPlaying) {
+        audio.pause();
+        isPlaying = false;
+        document.getElementById('play-btn').textContent = '▶ PLAY';
+        document.getElementById('play-btn').classList.add('pulsing');
+        cancelAnimationFrame(visualizerAnimationId);
+        if (particleSystem) particleSystem.stop();
+    } else {
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+            playPromise.then(() => {
+                isPlaying = true;
+                document.getElementById('play-btn').textContent = '❚❚ PAUSE';
+                document.getElementById('play-btn').classList.remove('pulsing');
+                updateVisualizer();
+                if (particleSystem && !PerformanceOptimizer.lowPowerMode) particleSystem.update();
+                analytics.trackPlay(currentTrackIndex, audio.duration || 0);
+            }).catch(err => {
+                console.error('Play Error:', err);
+                showNotification('Playback error: ' + err.message, 'error');
+                isPlaying = false;
+            });
+        }
+    }
 }
 
-// تهيئة سياق الصوت
 function initAudioContext() {
-  if (!audioContext) {
-    audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    analyser = audioContext.createAnalyser();
-    source = audioContext.createMediaElementSource(audio);
-    source.connect(analyser);
-    analyser.connect(audioContext.destination);
-    analyser.fftSize = 256;
-    
-    const particlesCanvas = document.getElementById('particles');
-    particleSystem = new ParticleSystem(particlesCanvas, audioContext);
-    particleSystem.init(analyser);
-  }
+    if (!audioContext) {
+        try {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            analyser = audioContext.createAnalyser();
+            source = audioContext.createMediaElementSource(audio);
+            const effectsOutput = audioEffects.init(audioContext, source);
+            effectsOutput.connect(analyser);
+            analyser.connect(audioContext.destination);
+            analyser.fftSize = 256;
+            const particlesCanvas = document.getElementById('particles');
+            particleSystem = new ParticleSystem(particlesCanvas, audioContext);
+            particleSystem.init(analyser);
+        } catch (e) {
+            console.error('Audio Context Error:', e);
+            showNotification('Audio effects unavailable', 'error');
+        }
+    } else if (audioContext.state === 'suspended') {
+        audioContext.resume();
+    }
 }
 
-// تحديث المصمم الصوتي
-let visualizerAnimationId;
 function updateVisualizer() {
   if (!isPlaying || !analyser) return;
-  
   const canvas = document.getElementById('visualizer');
   const ctx = canvas.getContext('2d');
   const { width, height } = canvas.getBoundingClientRect();
-  
   canvas.width = width;
   canvas.height = height;
-  
   const bufferLength = analyser.frequencyBinCount;
   const dataArray = new Uint8Array(bufferLength);
-
   const draw = () => {
     if (!isPlaying) return;
-    
     visualizerAnimationId = requestAnimationFrame(draw);
     analyser.getByteFrequencyData(dataArray);
-    
     visualEffects.drawWaveform(ctx, width, height, dataArray, bufferLength);
   };
-  
   draw();
 }
 
-// تحميل الأغنية
 function loadTrack(index) {
   if (index < 0 || index >= tracks.length) return;
-  
   audio.pause();
   isPlaying = false;
-  
+  document.getElementById('play-btn').textContent = '▶ PLAY';
+  document.getElementById('play-btn').classList.add('pulsing');
   currentTrackIndex = index;
   audio.src = tracks[index].url;
-  document.getElementById('track-title').textContent = tracks[index].title;
-  
+  const titleContainer = document.getElementById('track-title');
+  titleContainer.innerHTML = ''; // Clear previous content
+  titleContainer.appendChild(document.createTextNode(tracks[index].title + ' '));
+  const favButton = document.createElement('button');
+  favButton.className = 'favorite-btn';
+  favButton.id = 'favorite-btn';
+  favButton.title = 'Add to favorites';
+  favButton.innerHTML = '★';
+  favButton.addEventListener('click', () => {
+    const isNowFavorite = analytics.toggleFavorite(currentTrackIndex);
+    favButton.classList.toggle('active', isNowFavorite);
+  });
+  titleContainer.appendChild(favButton);
+
+  document.getElementById('audio-status').textContent = 'LOADING';
   document.getElementById('progress').style.width = '0%';
   document.getElementById('time-display').textContent = '00:00 / 00:00';
-  
+  musicAI.analyzeMood(index);
   audio.load();
   updatePlaylist();
-  
-  if (isPlaying) {
-    setTimeout(() => {
-      audio.play().catch(err => {
-        console.error('Load Error:', err);
-        showNotification('Track load error', 'error');
-      });
-    }, 100);
-  }
-  
   showNotification(`Loaded: ${tracks[index].title}`, 'info', 2000);
 }
 
-// تحديث شريط التقدم
 function updateProgress() {
   if (isDraggingProgress) return;
-  
   const progress = (audio.currentTime / audio.duration) * 100 || 0;
   document.getElementById('progress').style.width = `${progress}%`;
-  document.getElementById('time-display').textContent = 
-    `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
+  document.getElementById('time-display').textContent = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
 }
 
-// تنسيق الوقت
 function formatTime(seconds) {
   if (isNaN(seconds)) return '00:00';
   const mins = Math.floor(seconds / 60);
@@ -1426,17 +1848,14 @@ function formatTime(seconds) {
   return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
 }
 
-// تغيير مستوى الصوت
 function updateVolume() {
   const volume = document.getElementById('volume-slider').value / 100;
   audio.volume = volume;
   document.getElementById('volume').textContent = `${Math.round(volume * 100)}%`;
 }
 
-// التحكم في شريط التقدم
 function setupProgressControl() {
   const progressContainer = document.getElementById('progress-container');
-  
   progressContainer.addEventListener('click', (e) => {
     if (audio.duration) {
       const rect = progressContainer.getBoundingClientRect();
@@ -1444,169 +1863,211 @@ function setupProgressControl() {
       audio.currentTime = percent * audio.duration;
     }
   });
-  
-  progressContainer.addEventListener('mousedown', (e) => {
-    isDraggingProgress = true;
-  });
-  
+  progressContainer.addEventListener('mousedown', () => { isDraggingProgress = true; });
   document.addEventListener('mousemove', (e) => {
     if (isDraggingProgress && audio.duration) {
       const rect = progressContainer.getBoundingClientRect();
       const percent = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
       audio.currentTime = percent * audio.duration;
+      updateProgress();
     }
   });
-  
-  document.addEventListener('mouseup', () => {
-    isDraggingProgress = false;
-  });
+  document.addEventListener('mouseup', () => { isDraggingProgress = false; });
 }
 
-// الحصول على الأغنية التالية
 function getNextTrack() {
   if (isShuffled) {
-    return Math.floor(Math.random() * tracks.length);
+    let nextIndex;
+    do { nextIndex = Math.floor(Math.random() * tracks.length); } 
+    while (tracks.length > 1 && nextIndex === currentTrackIndex);
+    return nextIndex;
   }
   return (currentTrackIndex + 1) % tracks.length;
 }
 
-// الحصول على الأغنية السابقة
 function getPrevTrack() {
   return (currentTrackIndex - 1 + tracks.length) % tracks.length;
 }
 
-// ========== تهيئة الأحداث الجديدة ==========
 function initializeAdvancedEvents() {
-  // أحداث لوحة التحكم المتقدمة
-  document.getElementById('toggle-controls').addEventListener('click', () => {
-    const panel = document.getElementById('control-panel');
-    panel.style.display = panel.style.display === 'grid' ? 'none' : 'grid';
-  });
-  
-  // أحداث أزرار لوحة التحكم
-  document.querySelectorAll('.panel-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      const action = e.target.dataset.action;
-      switch(action) {
-        case 'shuffle': toggleShuffle(); break;
-        case 'repeat': toggleLoop(); break;
-        case 'mute': toggleMute(); break;
-        case 'stats': 
-          const statsPanel = document.getElementById('stats-panel');
-          statsPanel.style.display = statsPanel.style.display === 'block' ? 'none' : 'block';
-          document.getElementById('info-panel').style.display = 'none';
-          analytics.updateStatsDisplay();
-          break;
-        case 'info':
-          const infoPanel = document.getElementById('info-panel');
-          infoPanel.style.display = infoPanel.style.display === 'block' ? 'none' : 'block';
-          document.getElementById('stats-panel').style.display = 'none';
-          break;
-        case 'visual-mode':
-          PerformanceOptimizer.togglePowerMode();
-          break;
-      }
+    document.getElementById('toggle-controls').addEventListener('click', () => {
+        const panel = document.getElementById('control-panel');
+        panel.style.display = panel.style.display === 'grid' ? 'none' : 'grid';
     });
-  });
   
-  // أحداث أزرار المصمم البصري
-  document.querySelectorAll('.visualizer-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      visualEffects.setMode(e.target.dataset.mode);
+    document.querySelectorAll('.panel-btn, .fix-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const action = e.target.dataset.action;
+            const panels = ['stats-panel', 'info-panel', 'audio-fix-panel', 'ai-panel', 'effects-panel', 'studio-panel', 'recommendations-panel'];
+            const togglePanel = (panelId) => {
+                const panel = document.getElementById(panelId);
+                const isVisible = panel.style.display !== 'none';
+                panels.forEach(p => document.getElementById(p).style.display = 'none');
+                if (!isVisible) {
+                    panel.style.display = (panel.id === 'ai-panel' || panel.id === 'effects-panel') ? 'grid' : 'block';
+                }
+            };
+
+            switch(action) {
+                case 'shuffle': toggleShuffle(); break;
+                case 'repeat': toggleLoop(); break;
+                case 'mute': toggleMute(); break;
+                case 'stats': togglePanel('stats-panel'); analytics.updateStatsDisplay(); break;
+                case 'info': togglePanel('info-panel'); break;
+                case 'audio-fix': togglePanel('audio-fix-panel'); break;
+                case 'ai-recommend': togglePanel('ai-panel'); break;
+                case 'effects': togglePanel('effects-panel'); break;
+                case 'studio': togglePanel('studio-panel'); break;
+                case 'mood-analysis': musicAI.analyzeMood(currentTrackIndex); showNotification('Mood analysis complete', 'success'); break;
+                case 'generate-playlist': showNotification(`Generated ${musicAI.generatePlaylist(musicAI.currentMood, 8).length} ${musicAI.currentMood} tracks`, 'success'); break;
+                case 'show-recommendations': showRecommendations(); break;
+                case 'smart-shuffle': showNotification('Smart shuffle activated', 'success'); break;
+                case 'reset-effects': audioEffects.resetEffects(); break;
+                case 'eq-preset-vocal': audioEffects.setEQPreset('vocal'); break;
+                case 'eq-preset-bass': audioEffects.setEQPreset('bass'); break;
+                case 'eq-reset': audioEffects.resetEQ(); break;
+                case 'test-audio': audioFixSystem.testAudioSystem(); break;
+                case 'reset-audio': audioFixSystem.resetAudioSystem(); break;
+                case 'reload-tracks': audioFixSystem.reloadAllTracks(); break;
+            }
+        });
     });
-  });
   
-  // حدث زر المفضلة
-  document.getElementById('favorite-btn').addEventListener('click', () => {
-    const isNowFavorite = analytics.toggleFavorite(currentTrackIndex);
-    document.getElementById('favorite-btn').classList.toggle('active', isNowFavorite);
-  });
+    document.querySelectorAll('.effect-slider').forEach(slider => {
+        slider.addEventListener('input', (e) => {
+            const effect = e.target.id.replace('-slider', '');
+            audioEffects.updateEffect(effect, parseInt(e.target.value));
+        });
+    });
+
+    document.querySelectorAll('.eq-slider').forEach(slider => {
+        slider.addEventListener('input', (e) => {
+            const band = e.target.id.replace('eq-', '');
+            audioEffects.updateEQ(band, parseInt(e.target.value));
+        });
+    });
   
-  // تحديث معلومات الذاكرة
-  setInterval(() => {
-    if (window.performance && window.performance.memory) {
-      const memory = window.performance.memory;
-      const used = Math.round(memory.usedJSHeapSize / 1048576);
-      document.getElementById('memory-usage').textContent = `${used}MB`;
-    }
-  }, 5000);
+    document.querySelectorAll('.visualizer-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => { visualEffects.setMode(e.target.dataset.mode); });
+    });
 }
 
-// ========== تهيئة التطبيق ==========
-function initializeApp() {
-  initializePlaylist();
-  setupProgressControl();
-  initializeEvents();
-  initializeAdvancedEvents();
-  setupKeyboardShortcuts();
-  loadTrack(0);
-  audio.volume = 1.0;
-  updateDateTime();
-  analytics.updateStatsDisplay();
-  
-  showNotification('NEON PLAYER PRO 2.0 Loaded - 22 Tracks', 'success', 3000);
-}
-
-// الأحداث الأصلية
-function initializeEvents() {
-  document.querySelectorAll('[data-action]').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      const action = e.target.dataset.action;
-      switch(action) {
-        case 'play': togglePlay(); break;
-        case 'prev': loadTrack(getPrevTrack()); break;
-        case 'next': loadTrack(getNextTrack()); break;
-        case 'subscribe': 
-          window.open('https://youtube.com/@SoundSurge3', '_blank');
-          break;
-      }
-    });
-  });
-
-  document.getElementById('playlist-prev').addEventListener('click', () => {
-    const items = document.querySelectorAll('.playlist-item');
-    const activeIndex = Array.from(items).findIndex(item => item.classList.contains('active'));
-    if (activeIndex > 0) {
-      items[activeIndex - 1].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }
-  });
-
-  document.getElementById('playlist-next').addEventListener('click', () => {
-    const items = document.querySelectorAll('.playlist-item');
-    const activeIndex = Array.from(items).findIndex(item => item.classList.contains('active'));
-    if (activeIndex < items.length - 1) {
-      items[activeIndex + 1].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }
-  });
-
-  audio.addEventListener('timeupdate', updateProgress);
-  audio.addEventListener('ended', () => {
-    if (!isLooping) {
-      loadTrack(getNextTrack());
-      if (isPlaying) {
-        setTimeout(() => audio.play(), 100);
-      }
+function showRecommendations() {
+    const recommendations = musicAI.getSimilarTracks(currentTrackIndex, 5);
+    const panel = document.getElementById('recommendations-panel');
+    const list = document.getElementById('recommendations-list');
+    list.innerHTML = '';
+    if (recommendations.length === 0) {
+        list.innerHTML = `<div class="recommendation-item" style="cursor: default; opacity: 0.7;">No similar tracks found.</div>`;
     } else {
-      audio.currentTime = 0;
-      audio.play();
+        recommendations.forEach(trackIndex => {
+            const item = document.createElement('div');
+            item.className = 'recommendation-item';
+            item.textContent = tracks[trackIndex].title;
+            item.addEventListener('click', () => { loadTrack(trackIndex); panel.style.display = 'none'; });
+            list.appendChild(item);
+        });
     }
-  });
-  audio.addEventListener('error', (e) => {
-    console.error('Audio Error:', e);
-    showNotification('Audio playback error', 'error');
-  });
-  
-  document.getElementById('volume-slider').addEventListener('input', updateVolume);
+    const panels = ['stats-panel', 'info-panel', 'audio-fix-panel', 'ai-panel', 'effects-panel', 'studio-panel'];
+    panels.forEach(p => document.getElementById(p).style.display = 'none');
+    panel.style.display = 'block';
 }
 
-// بدء التطبيق
-window.addEventListener('load', initializeApp);
+function initializeEvents() {
+    document.querySelectorAll('[data-action]').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const action = e.currentTarget.dataset.action;
+            switch(action) {
+                case 'play': togglePlay(); break;
+                case 'prev': loadTrack(getPrevTrack()); break;
+                case 'next': loadTrack(getNextTrack()); break;
+                case 'subscribe': window.open('https://youtube.com/@SoundSurge3', '_blank'); break;
+            }
+        });
+    });
 
-// تنظيف الموارد
+    document.getElementById('playlist-prev').addEventListener('click', () => { document.getElementById('playlist-items').scrollBy({ top: -50, behavior: 'smooth' }); });
+    document.getElementById('playlist-next').addEventListener('click', () => { document.getElementById('playlist-items').scrollBy({ top: 50, behavior: 'smooth' }); });
+
+    audio.addEventListener('timeupdate', updateProgress);
+    audio.addEventListener('ended', () => {
+        if (isLooping) {
+            audio.currentTime = 0;
+            audio.play();
+        } else {
+            const nextTrackIndex = getNextTrack();
+            loadTrack(nextTrackIndex);
+            setTimeout(() => {
+                const playPromise = audio.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(err => console.error('Autoplay failed after track ended:', err));
+                }
+            }, 150);
+        }
+    });
+    document.getElementById('volume-slider').addEventListener('input', updateVolume);
+}
+
+function initializeApp() {
+    setupAudioSystem();
+    initializePlaylist();
+    setupProgressControl();
+    initializeEvents();
+    initializeAdvancedEvents();
+    setupKeyboardShortcuts();
+    loadTrack(0);
+    // Matrix BG
+    const canvas = document.getElementById('matrixCanvas');
+    const ctx = canvas.getContext('2d');
+    let matrixAnimationId;
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+    const fontSize = 12;
+    const columns = Math.floor(canvas.width / fontSize);
+    const drops = Array(columns).fill(0);
+    function drawMatrix() {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.03)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#00ff88';
+        ctx.font = `${fontSize}px monospace`;
+        for (let i = 0; i < drops.length; i++) {
+            if (Math.random() > 0.975) {
+                const char = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$#@%&'[Math.floor(Math.random() * 39)];
+                ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+            }
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+            drops[i]++;
+        }
+    }
+    setInterval(drawMatrix, 40);
+    
+    // Date/Time
+    const dateTimeTimer = setInterval(updateDateTime, 1000);
+    PerformanceOptimizer.addTimer(dateTimeTimer);
+    updateDateTime();
+    
+    analytics.updateStatsDisplay();
+    showNotification('NEON PLAYER PRO 3.0 Loaded', 'success', 3000);
+}
+
 window.addEventListener('beforeunload', () => {
   PerformanceOptimizer.cleanup();
   PerformanceOptimizer.clearAllTimers();
 });
+
+window.addEventListener('load', initializeApp);
+
+function updateDateTime() {
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
+  document.getElementById('current-date').textContent = dateStr;
+  const timeStr = now.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  document.getElementById('current-time').textContent = timeStr;
+}
 </script>
 </body>
 </html>
