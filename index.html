@@ -10,6 +10,7 @@
   --main-color: #00ff88;
   --bg-color: #000000;
   --secondary-color: #00ff8833;
+  --accent-color: #00ccff;
   --terminal-font: 'Orbitron', monospace;
 }
 
@@ -47,10 +48,11 @@ body {
 
 .container {
   width: 100%;
-  max-width: 320px;
+  max-width: 380px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 8px;
 }
 
 .player-container {
@@ -62,7 +64,6 @@ body {
   box-shadow: 0 0 10px var(--secondary-color);
   position: relative;
   overflow: hidden;
-  margin: 5px 0;
 }
 
 .visual-display {
@@ -348,9 +349,250 @@ body {
   font-weight: 800;
 }
 
+/* أنيميشن بسيطة للشاشة */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.player-container, .playlist-container {
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* تأثير النبض للعناصر النشطة */
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.7; }
+  100% { opacity: 1; }
+}
+
+.pulsing {
+  animation: pulse 2s infinite;
+}
+
+/* لوحة التحكم المتقدمة */
+.control-panel {
+  width: 100%;
+  background: #000;
+  border: 1px solid var(--main-color);
+  padding: 8px;
+  display: none;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.panel-section {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.panel-title {
+  color: var(--main-color);
+  font-size: 8px;
+  font-weight: 800;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.panel-btn {
+  background: #001100;
+  border: 1px solid var(--main-color);
+  color: var(--main-color);
+  padding: 4px 6px;
+  font-size: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 800;
+  text-align: center;
+}
+
+.panel-btn:hover {
+  background: var(--main-color);
+  color: #000;
+}
+
+.panel-btn.active {
+  background: var(--main-color);
+  color: #000;
+}
+
+/* نظام الإشعارات */
+.notification-container {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  max-width: 200px;
+}
+
+.notification {
+  background: #001100;
+  border: 1px solid var(--main-color);
+  color: var(--main-color);
+  padding: 8px 10px;
+  font-size: 9px;
+  font-weight: 800;
+  animation: slideInRight 0.3s ease-out;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.notification.error {
+  border-color: #ff4444;
+  color: #ff4444;
+}
+
+.notification.success {
+  border-color: #00ff88;
+  color: #00ff88;
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideOutRight {
+  from { transform: translateX(0); opacity: 1; }
+  to { transform: translateX(100%); opacity: 0; }
+}
+
+/* إحصائيات الموسيقى */
+.stats-panel {
+  width: 100%;
+  background: #000;
+  border: 1px solid var(--main-color);
+  padding: 8px;
+  display: none;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.stat-label {
+  color: var(--main-color);
+  font-size: 8px;
+  font-weight: 800;
+  opacity: 0.7;
+}
+
+.stat-value {
+  color: var(--main-color);
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.most-played {
+  border-top: 1px solid var(--main-color);
+  padding-top: 6px;
+}
+
+.most-played-title {
+  color: var(--main-color);
+  font-size: 8px;
+  font-weight: 800;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+
+.most-played-item {
+  display: flex;
+  justify-content: space-between;
+  color: var(--main-color);
+  font-size: 8px;
+  font-weight: 800;
+  padding: 2px 0;
+}
+
+/* تأثيرات بصرية */
+.visualizer-modes {
+  display: flex;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.visualizer-btn {
+  flex: 1;
+  background: #001100;
+  border: 1px solid var(--main-color);
+  color: var(--main-color);
+  padding: 3px;
+  font-size: 7px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 800;
+  text-align: center;
+}
+
+.visualizer-btn.active {
+  background: var(--main-color);
+  color: #000;
+}
+
+/* المفضلة */
+.favorite-btn {
+  background: transparent;
+  border: none;
+  color: var(--main-color);
+  cursor: pointer;
+  font-size: 10px;
+  margin-left: 5px;
+  transition: all 0.2s;
+}
+
+.favorite-btn.active {
+  color: #ff4444;
+}
+
+/* شاشة المعلومات */
+.info-panel {
+  width: 100%;
+  background: #000;
+  border: 1px solid var(--main-color);
+  padding: 8px;
+  display: none;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  color: var(--main-color);
+  font-size: 8px;
+  font-weight: 800;
+  padding: 3px 0;
+  border-bottom: 1px solid #001100;
+}
+
+.info-item:last-child {
+  border-bottom: none;
+}
+
+.info-label {
+  opacity: 0.7;
+}
+
+.info-value {
+  font-weight: 800;
+}
+
 @media (max-width: 480px) {
   .container {
-    max-width: 300px;
+    max-width: 350px;
   }
   
   .player-container {
@@ -374,31 +616,12 @@ body {
     font-size: 8px;
   }
 }
-
-/* أنيميشن بسيطة للشاشة */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-.player-container, .playlist-container {
-  animation: fadeIn 0.5s ease-out;
-}
-
-/* تأثير النبض للعناصر النشطة */
-@keyframes pulse {
-  0% { opacity: 1; }
-  50% { opacity: 0.7; }
-  100% { opacity: 1; }
-}
-
-.pulsing {
-  animation: pulse 2s infinite;
-}
 </style>
 </head>
 <body>
 <canvas class="matrix-bg" id="matrixCanvas"></canvas>
+
+<div class="notification-container" id="notificationContainer"></div>
 
 <div class="container">
   <div class="player-container">
@@ -406,7 +629,9 @@ body {
       <canvas class="audio-wave" id="visualizer"></canvas>
       <canvas id="particles"></canvas>
       <div class="metadata">
-        <div id="track-title">NEON MUSIC PLAYER</div>
+        <div id="track-title">NEON MUSIC PLAYER 
+          <button class="favorite-btn" id="favorite-btn" title="Add to favorites">★</button>
+        </div>
         <div id="time-display">00:00 / 00:00</div>
         <div id="bitrate-display" style="font-size:7px">BITRATE: <span class="loading-dot">···</span></div>
       </div>
@@ -433,9 +658,78 @@ body {
       <span id="volume">100%</span>
     </div>
 
+    <div class="visualizer-modes">
+      <button class="visualizer-btn active" data-mode="wave">WAVE</button>
+      <button class="visualizer-btn" data-mode="bars">BARS</button>
+      <button class="visualizer-btn" data-mode="circle">CIRCLE</button>
+    </div>
+
     <div class="status-bar">
       <span>QUALITY: <span id="quality">HD</span></span>
-      <span>NEON PLAYER PRO</span>
+      <span id="playback-info">NEON PLAYER PRO</span>
+    </div>
+  </div>
+
+  <button class="retro-btn" id="toggle-controls" style="width: 100%; margin: 0;">ADVANCED CONTROLS</button>
+
+  <div class="control-panel" id="control-panel">
+    <div class="panel-section">
+      <div class="panel-title">PLAYBACK</div>
+      <button class="panel-btn" data-action="shuffle">SHUFFLE</button>
+      <button class="panel-btn" data-action="repeat" id="repeat-btn">REPEAT: OFF</button>
+      <button class="panel-btn" data-action="mute" id="mute-btn">MUTE: OFF</button>
+    </div>
+    <div class="panel-section">
+      <div class="panel-title">SYSTEM</div>
+      <button class="panel-btn" data-action="stats">SHOW STATS</button>
+      <button class="panel-btn" data-action="info">PLAYER INFO</button>
+      <button class="panel-btn" data-action="visual-mode">VISUAL MODE</button>
+    </div>
+  </div>
+
+  <div class="stats-panel" id="stats-panel">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-label">TOTAL PLAYTIME</div>
+        <div class="stat-value" id="total-playtime">0h 0m</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">TRACKS PLAYED</div>
+        <div class="stat-value" id="tracks-played">0</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">SESSION TIME</div>
+        <div class="stat-value" id="session-time">0m</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">FAVORITES</div>
+        <div class="stat-value" id="favorites-count">0</div>
+      </div>
+    </div>
+    <div class="most-played">
+      <div class="most-played-title">MOST PLAYED</div>
+      <div id="most-played-list">
+        <!-- سيتم ملؤها بالجافاسكريبت -->
+      </div>
+    </div>
+  </div>
+
+  <div class="info-panel" id="info-panel">
+    <div class="info-item">
+      <span class="info-label">VERSION</span>
+      <span class="info-value">NEON PLAYER PRO 2.0</span>
+    </div>
+    <div class="info-item">
+      <span class="info-label">KEYBOARD SHORTCUTS</span>
+      <span class="info-value">SPACE, ARROWS, M, L</span>
+    </div>
+    <div class="info-item">
+      <span class="info-label">TRACKS LOADED</span>
+      <span class="info-value" id="tracks-loaded">22</span>
+    </div>
+    <div class="info-item">
+      <span class="info-label">MEMORY USAGE</span>
+      <span class="info-value" id="memory-usage">OPTIMAL</span>
     </div>
   </div>
 
@@ -454,9 +748,10 @@ body {
 </div>
 
 <script>
-// تحسينات الأداء - تقليل استهلاك الموارد
+// ========== نظام الأداء والتحسين ==========
 const PerformanceOptimizer = {
   timers: [],
+  lowPowerMode: false,
   
   addTimer: function(timer) {
     this.timers.push(timer);
@@ -467,7 +762,19 @@ const PerformanceOptimizer = {
     this.timers = [];
   },
   
-  // إدارة الذاكرة
+  togglePowerMode: function() {
+    this.lowPowerMode = !this.lowPowerMode;
+    if (this.lowPowerMode) {
+      particleSystem.stop();
+      document.getElementById('matrixCanvas').style.opacity = '0.02';
+      showNotification('Low Power Mode: ON', 'info');
+    } else {
+      if (isPlaying) particleSystem.update();
+      document.getElementById('matrixCanvas').style.opacity = '0.05';
+      showNotification('Low Power Mode: OFF', 'info');
+    }
+  },
+  
   cleanup: function() {
     if (window.audioContext && window.audioContext.state !== 'closed') {
       window.audioContext.close();
@@ -478,6 +785,288 @@ const PerformanceOptimizer = {
   }
 };
 
+// ========== نظام الإشعارات ==========
+function showNotification(message, type = 'info', duration = 3000) {
+  const container = document.getElementById('notificationContainer');
+  const notification = document.createElement('div');
+  notification.className = `notification ${type}`;
+  notification.textContent = message;
+  
+  container.appendChild(notification);
+  
+  setTimeout(() => {
+    notification.style.animation = 'slideOutRight 0.3s ease-in';
+    setTimeout(() => notification.remove(), 300);
+  }, duration);
+}
+
+// ========== نظام الإحصائيات ==========
+class MusicAnalytics {
+  constructor() {
+    this.stats = {
+      totalPlayTime: 0,
+      tracksPlayed: {},
+      sessionStart: Date.now(),
+      favorites: []
+    };
+    this.loadStats();
+  }
+  
+  trackPlay(trackId, duration) {
+    if (!this.stats.tracksPlayed[trackId]) {
+      this.stats.tracksPlayed[trackId] = { plays: 0, totalTime: 0, title: tracks[trackId].title };
+    }
+    this.stats.tracksPlayed[trackId].plays++;
+    this.stats.tracksPlayed[trackId].totalTime += duration;
+    this.stats.totalPlayTime += duration;
+    this.saveStats();
+    this.updateStatsDisplay();
+  }
+  
+  toggleFavorite(trackId) {
+    const index = this.stats.favorites.indexOf(trackId);
+    if (index > -1) {
+      this.stats.favorites.splice(index, 1);
+      showNotification('Removed from favorites', 'info');
+    } else {
+      this.stats.favorites.push(trackId);
+      showNotification('Added to favorites', 'success');
+    }
+    this.saveStats();
+    this.updateStatsDisplay();
+    return index === -1;
+  }
+  
+  isFavorite(trackId) {
+    return this.stats.favorites.includes(trackId);
+  }
+  
+  getMostPlayed() {
+    return Object.entries(this.stats.tracksPlayed)
+      .sort((a, b) => b[1].plays - a[1].plays)
+      .slice(0, 3);
+  }
+  
+  updateStatsDisplay() {
+    document.getElementById('total-playtime').textContent = 
+      `${Math.floor(this.stats.totalPlayTime / 3600)}h ${Math.floor((this.stats.totalPlayTime % 3600) / 60)}m`;
+    
+    document.getElementById('tracks-played').textContent = 
+      Object.keys(this.stats.tracksPlayed).length;
+    
+    document.getElementById('favorites-count').textContent = 
+      this.stats.favorites.length;
+    
+    const sessionTime = Math.floor((Date.now() - this.stats.sessionStart) / 60000);
+    document.getElementById('session-time').textContent = `${sessionTime}m`;
+    
+    // تحديث قائمة الأكثر تشغيلاً
+    const mostPlayedList = document.getElementById('most-played-list');
+    mostPlayedList.innerHTML = '';
+    this.getMostPlayed().forEach(([id, data]) => {
+      const item = document.createElement('div');
+      item.className = 'most-played-item';
+      item.innerHTML = `<span>${data.title}</span><span>${data.plays}x</span>`;
+      mostPlayedList.appendChild(item);
+    });
+  }
+  
+  saveStats() {
+    localStorage.setItem('musicStats', JSON.stringify(this.stats));
+  }
+  
+  loadStats() {
+    const saved = localStorage.getItem('musicStats');
+    if (saved) {
+      this.stats = { ...this.stats, ...JSON.parse(saved) };
+    }
+  }
+}
+
+const analytics = new MusicAnalytics();
+
+// ========== نظام الإختصارات ==========
+function setupKeyboardShortcuts() {
+  document.addEventListener('keydown', (e) => {
+    if (e.target.tagName === 'INPUT') return;
+    
+    switch(e.code) {
+      case 'Space':
+        e.preventDefault();
+        togglePlay();
+        break;
+      case 'ArrowRight':
+        loadTrack(getNextTrack());
+        break;
+      case 'ArrowLeft':
+        loadTrack(getPrevTrack());
+        break;
+      case 'ArrowUp':
+        changeVolume(10);
+        break;
+      case 'ArrowDown':
+        changeVolume(-10);
+        break;
+      case 'KeyM':
+        toggleMute();
+        break;
+      case 'KeyL':
+        toggleLoop();
+        break;
+      case 'KeyS':
+        toggleShuffle();
+        break;
+      case 'KeyP':
+        PerformanceOptimizer.togglePowerMode();
+        break;
+    }
+  });
+}
+
+function changeVolume(delta) {
+  const slider = document.getElementById('volume-slider');
+  let newVolume = parseInt(slider.value) + delta;
+  newVolume = Math.max(0, Math.min(100, newVolume));
+  slider.value = newVolume;
+  updateVolume();
+  showNotification(`Volume: ${newVolume}%`, 'info', 1000);
+}
+
+// ========== نظام التحكم المتقدم ==========
+let isMuted = false;
+let isLooping = false;
+let isShuffled = false;
+
+function toggleMute() {
+  isMuted = !isMuted;
+  audio.muted = isMuted;
+  document.getElementById('mute-btn').textContent = `MUTE: ${isMuted ? 'ON' : 'OFF'}`;
+  showNotification(`Mute ${isMuted ? 'ON' : 'OFF'}`, 'info');
+}
+
+function toggleLoop() {
+  isLooping = !isLooping;
+  audio.loop = isLooping;
+  document.getElementById('repeat-btn').textContent = `REPEAT: ${isLooping ? 'ON' : 'OFF'}`;
+  showNotification(`Repeat ${isLooping ? 'ON' : 'OFF'}`, 'info');
+}
+
+function toggleShuffle() {
+  isShuffled = !isShuffled;
+  showNotification(`Shuffle ${isShuffled ? 'ON' : 'OFF'}`, 'info');
+}
+
+// ========== نظام التأثيرات البصرية ==========
+class AdvancedVisualEffects {
+  constructor() {
+    this.currentMode = 'wave';
+  }
+  
+  setMode(mode) {
+    this.currentMode = mode;
+    
+    // تحديث الأزرار النشطة
+    document.querySelectorAll('.visualizer-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.mode === mode);
+    });
+    
+    showNotification(`Visualizer: ${mode.toUpperCase()}`, 'info');
+    
+    // إعادة رسم المصمم الصوتي
+    if (isPlaying) {
+      cancelAnimationFrame(visualizerAnimationId);
+      updateVisualizer();
+    }
+  }
+  
+  drawWaveform(ctx, width, height, dataArray, bufferLength) {
+    ctx.clearRect(0, 0, width, height);
+    
+    if (this.currentMode === 'wave') {
+      this.drawWave(ctx, width, height, dataArray, bufferLength);
+    } else if (this.currentMode === 'bars') {
+      this.drawBars(ctx, width, height, dataArray, bufferLength);
+    } else if (this.currentMode === 'circle') {
+      this.drawCircle(ctx, width, height, dataArray, bufferLength);
+    }
+  }
+  
+  drawWave(ctx, width, height, dataArray, bufferLength) {
+    const sliceWidth = width / bufferLength;
+    let x = 0;
+    
+    ctx.beginPath();
+    for(let i = 0; i < bufferLength; i++) {
+      const v = dataArray[i] / 128;
+      const y = v * height/2;
+      
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      x += sliceWidth;
+    }
+    
+    ctx.strokeStyle = '#00ff88';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    
+    // رسم موجة مقلوبة
+    ctx.beginPath();
+    x = 0;
+    
+    for(let i = 0; i < bufferLength; i++) {
+      const v = dataArray[i] / 128;
+      const y = height - (v * height/2);
+      
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      x += sliceWidth;
+    }
+    
+    ctx.strokeStyle = '#00ff88';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  }
+  
+  drawBars(ctx, width, height, dataArray, bufferLength) {
+    const barWidth = (width / bufferLength) * 2.5;
+    let x = 0;
+    
+    for(let i = 0; i < bufferLength; i++) {
+      const barHeight = (dataArray[i] / 255) * height;
+      
+      ctx.fillStyle = '#00ff88';
+      ctx.fillRect(x, height - barHeight, barWidth, barHeight);
+      
+      x += barWidth + 1;
+    }
+  }
+  
+  drawCircle(ctx, width, height, dataArray, bufferLength) {
+    const centerX = width / 2;
+    const centerY = height / 2;
+    const radius = Math.min(width, height) / 3;
+    
+    ctx.beginPath();
+    for(let i = 0; i < bufferLength; i++) {
+      const angle = (i / bufferLength) * Math.PI * 2;
+      const barLength = (dataArray[i] / 255) * radius;
+      
+      const x1 = centerX + Math.cos(angle) * radius;
+      const y1 = centerY + Math.sin(angle) * radius;
+      const x2 = centerX + Math.cos(angle) * (radius + barLength);
+      const y2 = centerY + Math.sin(angle) * (radius + barLength);
+      
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x2, y2);
+    }
+    
+    ctx.strokeStyle = '#00ff88';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  }
+}
+
+const visualEffects = new AdvancedVisualEffects();
+
+// ========== الكود الأصلي مع التعديلات ==========
 // إدارة الوقت والتاريخ
 function updateDateTime() {
   const now = new Date();
@@ -504,7 +1093,7 @@ function updateDateTime() {
 const dateTimeTimer = setInterval(updateDateTime, 1000);
 PerformanceOptimizer.addTimer(dateTimeTimer);
 
-// مصفوفة الأحرف لخلفية الماتريكس (مخفضة لتحسين الأداء)
+// مصفوفة الأحرف لخلفية الماتريكس
 const matrixChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$#@%&';
 const canvas = document.getElementById('matrixCanvas');
 const ctx = canvas.getContext('2d');
@@ -512,7 +1101,7 @@ const ctx = canvas.getContext('2d');
 // تحسين أداء الماتريكس
 let matrixAnimationId;
 let lastMatrixUpdate = 0;
-const matrixUpdateInterval = 100; // تحديث كل 100ms بدلاً من كل إطار
+const matrixUpdateInterval = 100;
 
 function resizeCanvas() {
   canvas.width = window.innerWidth;
@@ -526,7 +1115,6 @@ const columns = Math.floor(canvas.width / fontSize);
 const drops = Array(columns).fill(0);
 
 function drawMatrix(timestamp) {
-  // تحديث الماتريكس ببطء أكثر
   if (timestamp - lastMatrixUpdate > matrixUpdateInterval) {
     lastMatrixUpdate = timestamp;
     
@@ -537,7 +1125,6 @@ function drawMatrix(timestamp) {
     ctx.font = `${fontSize}px monospace`;
 
     for (let i = 0; i < drops.length; i++) {
-      // تقليل عدد الأحرف المرسومة عشوائياً لتحسين الأداء
       if (Math.random() > 0.6) continue;
       
       const char = matrixChars[Math.floor(Math.random() * matrixChars.length)];
@@ -547,7 +1134,7 @@ function drawMatrix(timestamp) {
       ctx.fillText(char, x, y);
 
       if (y > canvas.height && Math.random() > 0.99) drops[i] = 0;
-      else drops[i] += 0.3; // تقليل سرعة السقوط بشكل كبير
+      else drops[i] += 0.3;
     }
   }
   
@@ -583,14 +1170,13 @@ class ParticleSystem {
     this.analyser = analyser;
     this.dataArray = new Uint8Array(analyser.frequencyBinCount);
     
-    // إنشاء عدد محدود من الجسيمات لتحسين الأداء
     for (let i = 0; i < 20; i++) {
       this.particles.push({
         x: Math.random() * this.canvas.width,
         y: Math.random() * this.canvas.height,
         size: Math.random() * 1.5 + 0.5,
-        speedX: (Math.random() - 0.5) * 0.5, // تقليل السرعة بشكل كبير
-        speedY: (Math.random() - 0.5) * 0.5, // تقليل السرعة بشكل كبير
+        speedX: (Math.random() - 0.5) * 0.5,
+        speedY: (Math.random() - 0.5) * 0.5,
         color: `rgba(0, 255, 136, ${Math.random() * 0.3 + 0.1})`
       });
     }
@@ -603,21 +1189,36 @@ class ParticleSystem {
     
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     
-    // تحديث ورسوم الجسيمات
     for (let i = 0; i < this.particles.length; i++) {
       const p = this.particles[i];
       
-      // تحريك الجسيمات ببطء
       p.x += p.speedX;
       p.y += p.speedY;
       
-      // تأثير الصوت على الجسيمات (مخفض)
+      const centerX = this.canvas.width / 2;
+      const centerY = this.canvas.height / 2;
+      const dx = centerX - p.x;
+      const dy = centerY - p.y;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+      
+      if (distance > 0) {
+        p.speedX += dx * 0.00005;
+        p.speedY += dy * 0.00005;
+      }
+      
       const frequencyIndex = Math.floor((i / this.particles.length) * this.dataArray.length);
       const audioValue = this.dataArray[frequencyIndex] / 255;
       
       p.size = 0.5 + audioValue * 1.5;
+      p.speedX += (Math.random() - 0.5) * audioValue * 0.2;
+      p.speedY += (Math.random() - 0.5) * audioValue * 0.2;
       
-      // إعادة تدوير الجسيمات عند الخروج من الشاشة
+      const speed = Math.sqrt(p.speedX * p.speedX + p.speedY * p.speedY);
+      if (speed > 1.5) {
+        p.speedX = (p.speedX / speed) * 1.5;
+        p.speedY = (p.speedY / speed) * 1.5;
+      }
+      
       if (p.x < 0 || p.x > this.canvas.width || p.y < 0 || p.y > this.canvas.height) {
         p.x = Math.random() * this.canvas.width;
         p.y = Math.random() * this.canvas.height;
@@ -625,7 +1226,6 @@ class ParticleSystem {
         p.speedY = (Math.random() - 0.5) * 0.5;
       }
       
-      // رسم الجسيمات
       this.ctx.beginPath();
       this.ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
       this.ctx.fillStyle = p.color;
@@ -643,7 +1243,7 @@ class ParticleSystem {
   }
 }
 
-// تحسينات مشغل الموسيقى
+// مشغل الموسيقى الأساسي
 const audio = new Audio();
 let isPlaying = false;
 let currentTrackIndex = 0;
@@ -651,28 +1251,33 @@ let audioContext, analyser, source;
 let isDraggingProgress = false;
 let particleSystem;
 
-// تحسين تحميل الصوت
 audio.crossOrigin = "anonymous";
 audio.preload = "metadata";
 
-// قائمة التشغيل
+// قائمة التشغيل الجديدة - 22 أغنية
 const tracks = [
-  { url: "https://audio.jukehost.co.uk/JhI5f3CZoxeAcZKDCMDVpmqbWAy8l4zZ", title: "Track 1" },
-  { url: "https://audio.jukehost.co.uk/2j8VqR5yySK6a0NjECCLtxIqQpOPDhIa", title: "Track 2" },
-  { url: "https://audio.jukehost.co.uk/EV1j9CJcIsVg4wTahADEBmo0HZBF1Sr5", title: "Track 3" },
-  { url: "https://audio.jukehost.co.uk/fiiOvYs3vxmLtPRKsNtVCApM8LdZPWsw", title: "Track 4" },
-  { url: "https://audio.jukehost.co.uk/qCnVBweDsiIQnZCX3wMiX4GoFjVrxqZI", title: "Track 5" },
-  { url: "https://audio.jukehost.co.uk/ekOSymsgNvYeAzjsi6t33px3vdsAYytw", title: "Track 6" },
-  { url: "https://audio.jukehost.co.uk/PomqBTOUgHNVPJVEu9hlLha61gatFawB", title: "Track 7" },
-  { url: "https://audio.jukehost.co.uk/05YNytniPhtgIpzjd1spoEt2rlEa9a3s", title: "Track 8" },
-  { url: "https://audio.jukehost.co.uk/q8j2dhoMz4KNeaDUD5ZBjH8JNKXmQKLW", title: "Track 9" },
-  { url: "https://audio.jukehost.co.uk/QvoaUSPzD8tffG63ZHdMCTthrORKxra1", title: "Track 10" },
-  { url: "https://audio.jukehost.co.uk/54SxqZLQGW3469gLga6idzs6gxXKZWaN", title: "Track 11" },
-  { url: "https://audio.jukehost.co.uk/xZFuYv5XGQngRpyjGzwoFqCxRULhWSFL", title: "Track 12" },
-  { url: "https://audio.jukehost.co.uk/UUGAuX3ZoRfEFZnjU3s6CxMa0voOS5p7", title: "Track 13" },
-  { url: "https://audio.jukehost.co.uk/rOHez1AI4SJCcVQuDF5eKSHxdjMIklI6", title: "Track 14" },
-  { url: "https://audio.jukehost.co.uk/PuMW9z7HvyLda4vEEP8PEYOAGXlIjAwV", title: "Track 15" },
-  { url: "https://audio.jukehost.co.uk/Hv9zrCLEc8hHTlsSYprl67LdKpV4BR14", title: "Track 16" }
+  { url: "https://audio.jukehost.co.uk/blRnPzc1hzIH51wq1jEzhF3fJkEmFWz7", title: "Track 1" },
+  { url: "https://audio.jukehost.co.uk/0EbCxlZ1AAurrspBkdo4g6QSoFUZqXg3", title: "Track 2" },
+  { url: "https://audio.jukehost.co.uk/fqrh3n2zxIEsy48eHILUBQtQMtcNZRdP", title: "Track 3" },
+  { url: "https://audio.jukehost.co.uk/bn3aRh3qIEocbpRoLLu4SsTaxAitwD31", title: "Track 4" },
+  { url: "https://audio.jukehost.co.uk/acXPAn7H6YRLURkKQ5TK2si1dQXQeHFH", title: "Track 5" },
+  { url: "https://audio.jukehost.co.uk/SgXuTSVJZEHrJa3ljvaAkzGbsb5Y4JAn", title: "Track 6" },
+  { url: "https://audio.jukehost.co.uk/sWpvHQEn1Lru5RodhWLo3bgnFJt8gqv1", title: "Track 7" },
+  { url: "https://audio.jukehost.co.uk/5Tw0XUIDWjHAAli8BXhgfbuRWpHElUl9", title: "Track 8" },
+  { url: "https://audio.jukehost.co.uk/gHpSaLCZjbCQDwsBDDcTU4Gxfh2Wx8VZ", title: "Track 9" },
+  { url: "https://audio.jukehost.co.uk/Amsiw6C4URpnKNlvF6kJcRsvZ8xBmEUG", title: "Track 10" },
+  { url: "https://audio.jukehost.co.uk/ifRcN3J6JnA9XQMU3wOkPdquNNuqp8pl", title: "Track 11" },
+  { url: "https://audio.jukehost.co.uk/2IcAqSrGjEmIeAbsCUjMituolfxIzpU0", title: "Track 12" },
+  { url: "https://audio.jukehost.co.uk/gQttIopR5v3vfAtPCmMfxzpNOPfsLTlX", title: "Track 13" },
+  { url: "https://audio.jukehost.co.uk/zPiYyTSDIgmqqPKEccfV9IsWXtiC6Ajj", title: "Track 14" },
+  { url: "https://audio.jukehost.co.uk/1Cn3divXVWSucqWkfGfsvh5D6BVNEe1v", title: "Track 15" },
+  { url: "https://audio.jukehost.co.uk/HBaSGqeGQzGJnMfIA88zyGo8KhDx95bW", title: "Track 16" },
+  { url: "https://audio.jukehost.co.uk/htwp6KJkeXGqZyrqwoU2yjaW6s5SY7Dx", title: "Track 17" },
+  { url: "https://audio.jukehost.co.uk/HPWYWYsBVCCFI3xXTikWzez0MsYRjTyx", title: "Track 18" },
+  { url: "https://audio.jukehost.co.uk/qP4sUw97WvqApsktQI39gBoS4DGfHlIP", title: "Track 19" },
+  { url: "https://audio.jukehost.co.uk/tZ0FQ5HFQ6ZWmCF42TnFiNirCnAEHJtu", title: "Track 20" },
+  { url: "https://audio.jukehost.co.uk/G1AnFyIU8fsYFzrQYkGc1EEu1NUDIYdh", title: "Track 21" },
+  { url: "https://audio.jukehost.co.uk/e6lFphtGJiHbkjGqdbxOISUgbFUbCeyh", title: "Track 22" }
 ];
 
 // تهيئة قائمة التشغيل
@@ -702,6 +1307,10 @@ function updatePlaylist() {
   items.forEach((item, index) => {
     item.classList.toggle('active', index === currentTrackIndex);
   });
+  
+  // تحديث زر المفضلة
+  const favoriteBtn = document.getElementById('favorite-btn');
+  favoriteBtn.classList.toggle('active', analytics.isFavorite(currentTrackIndex));
 }
 
 // تشغيل/إيقاف الموسيقى
@@ -714,11 +1323,14 @@ function togglePlay() {
     audio.play().then(() => {
       initAudioContext();
       updateVisualizer();
-      if (particleSystem) particleSystem.update();
-    }).catch(err => console.error('Play Error:', err));
+      if (particleSystem && !PerformanceOptimizer.lowPowerMode) particleSystem.update();
+      analytics.trackPlay(currentTrackIndex, audio.duration || 0);
+    }).catch(err => {
+      console.error('Play Error:', err);
+      showNotification('Playback error', 'error');
+    });
   } else {
     audio.pause();
-    // إيقاف المؤثرات البصرية عند التوقف
     cancelAnimationFrame(visualizerAnimationId);
     if (particleSystem) particleSystem.stop();
   }
@@ -734,7 +1346,6 @@ function initAudioContext() {
     analyser.connect(audioContext.destination);
     analyser.fftSize = 256;
     
-    // تهيئة نظام الجسيمات
     const particlesCanvas = document.getElementById('particles');
     particleSystem = new ParticleSystem(particlesCanvas, audioContext);
     particleSystem.init(analyser);
@@ -762,40 +1373,7 @@ function updateVisualizer() {
     visualizerAnimationId = requestAnimationFrame(draw);
     analyser.getByteFrequencyData(dataArray);
     
-    ctx.clearRect(0, 0, width, height);
-    
-    // رسم موجة مبسطة
-    const sliceWidth = width / bufferLength;
-    let x = 0;
-    
-    ctx.beginPath();
-    for(let i = 0; i < bufferLength; i++) {
-      const v = dataArray[i] / 128;
-      const y = v * height/2;
-      
-      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
-      x += sliceWidth;
-    }
-    
-    ctx.strokeStyle = '#00ff88';
-    ctx.lineWidth = 1;
-    ctx.stroke();
-    
-    // رسم موجة مقلوبة
-    ctx.beginPath();
-    x = 0;
-    
-    for(let i = 0; i < bufferLength; i++) {
-      const v = dataArray[i] / 128;
-      const y = height - (v * height/2);
-      
-      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
-      x += sliceWidth;
-    }
-    
-    ctx.strokeStyle = '#00ff88';
-    ctx.lineWidth = 1;
-    ctx.stroke();
+    visualEffects.drawWaveform(ctx, width, height, dataArray, bufferLength);
   };
   
   draw();
@@ -805,7 +1383,6 @@ function updateVisualizer() {
 function loadTrack(index) {
   if (index < 0 || index >= tracks.length) return;
   
-  // إيقاف الأغنية الحالية
   audio.pause();
   isPlaying = false;
   
@@ -813,19 +1390,22 @@ function loadTrack(index) {
   audio.src = tracks[index].url;
   document.getElementById('track-title').textContent = tracks[index].title;
   
-  // إعادة تعيين شريط التقدم
   document.getElementById('progress').style.width = '0%';
   document.getElementById('time-display').textContent = '00:00 / 00:00';
   
   audio.load();
   updatePlaylist();
   
-  // تشغيل الأغنية إذا كانت متوقفة
   if (isPlaying) {
     setTimeout(() => {
-      audio.play().catch(err => console.error('Load Error:', err));
+      audio.play().catch(err => {
+        console.error('Load Error:', err);
+        showNotification('Track load error', 'error');
+      });
     }, 100);
   }
+  
+  showNotification(`Loaded: ${tracks[index].title}`, 'info', 2000);
 }
 
 // تحديث شريط التقدم
@@ -884,6 +1464,9 @@ function setupProgressControl() {
 
 // الحصول على الأغنية التالية
 function getNextTrack() {
+  if (isShuffled) {
+    return Math.floor(Math.random() * tracks.length);
+  }
   return (currentTrackIndex + 1) % tracks.length;
 }
 
@@ -892,9 +1475,80 @@ function getPrevTrack() {
   return (currentTrackIndex - 1 + tracks.length) % tracks.length;
 }
 
-// تهيئة الأحداث
+// ========== تهيئة الأحداث الجديدة ==========
+function initializeAdvancedEvents() {
+  // أحداث لوحة التحكم المتقدمة
+  document.getElementById('toggle-controls').addEventListener('click', () => {
+    const panel = document.getElementById('control-panel');
+    panel.style.display = panel.style.display === 'grid' ? 'none' : 'grid';
+  });
+  
+  // أحداث أزرار لوحة التحكم
+  document.querySelectorAll('.panel-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const action = e.target.dataset.action;
+      switch(action) {
+        case 'shuffle': toggleShuffle(); break;
+        case 'repeat': toggleLoop(); break;
+        case 'mute': toggleMute(); break;
+        case 'stats': 
+          const statsPanel = document.getElementById('stats-panel');
+          statsPanel.style.display = statsPanel.style.display === 'block' ? 'none' : 'block';
+          document.getElementById('info-panel').style.display = 'none';
+          analytics.updateStatsDisplay();
+          break;
+        case 'info':
+          const infoPanel = document.getElementById('info-panel');
+          infoPanel.style.display = infoPanel.style.display === 'block' ? 'none' : 'block';
+          document.getElementById('stats-panel').style.display = 'none';
+          break;
+        case 'visual-mode':
+          PerformanceOptimizer.togglePowerMode();
+          break;
+      }
+    });
+  });
+  
+  // أحداث أزرار المصمم البصري
+  document.querySelectorAll('.visualizer-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      visualEffects.setMode(e.target.dataset.mode);
+    });
+  });
+  
+  // حدث زر المفضلة
+  document.getElementById('favorite-btn').addEventListener('click', () => {
+    const isNowFavorite = analytics.toggleFavorite(currentTrackIndex);
+    document.getElementById('favorite-btn').classList.toggle('active', isNowFavorite);
+  });
+  
+  // تحديث معلومات الذاكرة
+  setInterval(() => {
+    if (window.performance && window.performance.memory) {
+      const memory = window.performance.memory;
+      const used = Math.round(memory.usedJSHeapSize / 1048576);
+      document.getElementById('memory-usage').textContent = `${used}MB`;
+    }
+  }, 5000);
+}
+
+// ========== تهيئة التطبيق ==========
+function initializeApp() {
+  initializePlaylist();
+  setupProgressControl();
+  initializeEvents();
+  initializeAdvancedEvents();
+  setupKeyboardShortcuts();
+  loadTrack(0);
+  audio.volume = 1.0;
+  updateDateTime();
+  analytics.updateStatsDisplay();
+  
+  showNotification('NEON PLAYER PRO 2.0 Loaded - 22 Tracks', 'success', 3000);
+}
+
+// الأحداث الأصلية
 function initializeEvents() {
-  // أحداث الأزرار
   document.querySelectorAll('[data-action]').forEach(btn => {
     btn.addEventListener('click', (e) => {
       const action = e.target.dataset.action;
@@ -909,7 +1563,6 @@ function initializeEvents() {
     });
   });
 
-  // أحداث قائمة التشغيل
   document.getElementById('playlist-prev').addEventListener('click', () => {
     const items = document.querySelectorAll('.playlist-item');
     const activeIndex = Array.from(items).findIndex(item => item.classList.contains('active'));
@@ -926,34 +1579,30 @@ function initializeEvents() {
     }
   });
 
-  // أحداث الصوت
   audio.addEventListener('timeupdate', updateProgress);
   audio.addEventListener('ended', () => {
-    loadTrack(getNextTrack());
-    if (isPlaying) {
-      setTimeout(() => audio.play(), 100);
+    if (!isLooping) {
+      loadTrack(getNextTrack());
+      if (isPlaying) {
+        setTimeout(() => audio.play(), 100);
+      }
+    } else {
+      audio.currentTime = 0;
+      audio.play();
     }
   });
-  audio.addEventListener('error', (e) => console.error('Audio Error:', e));
+  audio.addEventListener('error', (e) => {
+    console.error('Audio Error:', e);
+    showNotification('Audio playback error', 'error');
+  });
   
-  // حدث مستوى الصوت
   document.getElementById('volume-slider').addEventListener('input', updateVolume);
 }
 
-// تهيئة التطبيق
-function initializeApp() {
-  initializePlaylist();
-  setupProgressControl();
-  initializeEvents();
-  loadTrack(0);
-  audio.volume = 1.0;
-  updateDateTime();
-}
-
-// بدء التطبيق عند تحميل الصفحة
+// بدء التطبيق
 window.addEventListener('load', initializeApp);
 
-// تنظيف الموارد عند إغلاق الصفحة
+// تنظيف الموارد
 window.addEventListener('beforeunload', () => {
   PerformanceOptimizer.cleanup();
   PerformanceOptimizer.clearAllTimers();
